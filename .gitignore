@@ -1,0 +1,9 @@
+# CMake
+CMakeListsPrivate.txt
+cmake-build-*/
+
+#CLion
+.idea
+
+# Platform IO
+.pio
