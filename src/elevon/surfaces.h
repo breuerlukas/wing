@@ -10,7 +10,6 @@ private:
   Elevon* left_elevon_;
   std::vector<int> right_elevon_temp_values_;
   std::vector<int> left_elevon_temp_values_;
-  void StoreElevonsMovement(Elevon* elevons, int value);
 public:
   Surfaces(Elevon* right_elevon_, Elevon* left_elevon_);
   void Initialize();

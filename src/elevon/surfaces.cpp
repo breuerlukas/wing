@@ -11,24 +11,13 @@ void Surfaces::Initialize() {
 }
 
 void Surfaces::PerformSyncMovement(int value) {
-  StoreElevonsMovement(right_elevon_, value);
-  StoreElevonsMovement(left_elevon_, -value);
+  right_elevon_temp_values_.push_back(value);
+  left_elevon_temp_values_.push_back(-value);
 }
 
 void Surfaces::PerformAsyncMovement(int value) {
-  StoreElevonsMovement(right_elevon_, value);
-  StoreElevonsMovement(left_elevon_, value);
-}
-
-void Surfaces::StoreElevonsMovement(Elevon* elevon, int value) {
-  if (elevon == right_elevon_) {
-    right_elevon_temp_values_.push_back(value);
-    return;
-  }
-  if (elevon == left_elevon_) {
-    left_elevon_temp_values_.push_back(value);
-    return;
-  }
+  right_elevon_temp_values_.push_back(value);
+  left_elevon_temp_values_.push_back(value);
 }
 
 void Surfaces::Flush() {
