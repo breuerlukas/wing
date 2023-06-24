@@ -1,23 +1,28 @@
 #ifndef PLANE_TRANSMITTER_H
 #define PLANE_TRANSMITTER_H
 
+#include <cstddef>
+#include <IBusBM.h>
 #include "ArduinoSTL.h"
 #include "channel/channel.h"
 #include "channel/stick.h"
 
 class Transmitter {
 private:
+  IBusBM bus_;
   Stick* throttle_stick_;
   Stick* elevator_stick_;
   Stick* aileron_stick_;
   std::vector<Channel*> channels_;
 public:
-  Transmitter(Stick* throttle_stick, Stick* elevator_stick, Stick* aileron_stick);
+  Transmitter(Stick* throttleStick, Stick* elevatorStick, Stick* aileronStick);
+  void RegisterChannel(Channel* channel);
   void Initialize();
   void Update();
   Stick* ThrottleStick();
   Stick* ElevatorStick();
   Stick* AileronStick();
+  void RemoveChannel(Channel* channel);
 };
 
 

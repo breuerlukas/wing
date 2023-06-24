@@ -1,49 +1,25 @@
 #include "transmitter.h"
 
-Transmitter::Transmitter(Stick* throttle_stick, Stick* elevator_stick, Stick
-* aileron_stick) :
-throttle_stick_(throttle_stick), elevator_stick_(elevator_stick), aileron_stick_(aileron_stick) {
-  channels_.push_back(throttle_stick);
-  channels_.push_back(elevator_stick);
-  channels_.push_back(aileron_stick);
+Transmitter::Transmitter(Stick* throttleStick, Stick* elevatorStick, Stick* aileronStick)
+  : throttle_stick_(throttleStick),
+    elevator_stick_(elevatorStick),
+    aileron_stick_(aileronStick) {
+  RegisterChannel(throttleStick);
+  RegisterChannel(elevatorStick);
+  RegisterChannel(aileronStick);
 }
 
-static byte rcOld;
-volatile unsigned long rcRises[3];
-volatile unsigned long rcTimes[3];
+void Transmitter::RegisterChannel(Channel* channel) {
+  channels_.push_back(channel);
+}
 
 void Transmitter::Initialize() {
-  for (Channel* channel : channels_) {
-    channel->Initialize();
-  }
-  rcOld = 0;
-  PCMSK1 |= 0x0F;
-  PCIFR |= 0x02;
-  PCICR |= 0x02;
-}
-
-ISR(PCINT1_vect) {
-  byte rcNew = PINC & 15;
-  byte changes = rcNew^rcOld;
-  byte channel = 0;
-  unsigned long now = micros();
-  while (changes) {
-    if ((changes & 1)) {
-      if ((rcNew & (1<<channel))) {
-        rcRises[channel] = now;
-      } else {
-        rcTimes[channel] = now - rcRises[channel];
-      }
-    }
-    changes >>= 1;
-    ++channel;
-  }
-  rcOld = rcNew;
+  bus_.begin(Serial);
 }
 
 void Transmitter::Update() {
   for (int i = 0; i < channels_.size(); i++) {
-    channels_[i]->Update(rcTimes[i]);
+    channels_[i]->Update(bus_.readChannel(channels_[i]->Id()));
   }
 }
 
@@ -57,4 +33,8 @@ Stick* Transmitter::ElevatorStick() {
 
 Stick* Transmitter::AileronStick() {
   return aileron_stick_;
+}
+
+void Transmitter::RemoveChannel(Channel* channel) {
+  channels_.erase(std::remove(channels_.begin(), channels_.end(), channel), channels_.end());
 }

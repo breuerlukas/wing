@@ -4,11 +4,8 @@
 #include "channel.h"
 
 class Stick : public Channel {
-private:
-  int value_;
 public:
-  Stick(int pin);
-  void Update(long value) override;
+  Stick(int id);
   int Value();
 };
 

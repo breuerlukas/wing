@@ -1,21 +1,16 @@
 #include "channel.h"
 
-Channel::Channel(int pin) : pin_(pin) {
+Channel::Channel(int id) : id_(id) {
 
-}
-
-void Channel::Initialize() {
-  pinMode(pin_, INPUT);
 }
 
 void Channel::Update(long value) {
+  if (value == 0) {
+    return;
+  }
   this->value = value;
 }
 
-long Channel::Read() {
-  return value;
-}
-
-int Channel::Pin() {
-  return pin_;
+int Channel::Id() {
+  return id_;
 }

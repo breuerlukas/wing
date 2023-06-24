@@ -10,7 +10,7 @@ enum State {
 
 class Switch : public Channel {
 private:
-  State state_;
+  State state_ = kOff;
 public:
   Switch(int pin);
   void Update(long value) override;

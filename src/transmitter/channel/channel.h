@@ -5,16 +5,13 @@
 
 class Channel {
 private:
-  int pin_;
+  int id_;
 protected:
   long value;
 public:
-  Channel(int pin);
-  void Initialize();
+  Channel(int id);
   virtual void Update(long value);
-  int Pin();
-protected:
-  long Read();
+  int Id();
 };
 
 

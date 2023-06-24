@@ -1,14 +1,9 @@
 #include "stick.h"
 
-Stick::Stick(int pin) : Channel(pin) {
-
-}
-
-void Stick::Update(long value) {
-  this->value = value;
-  value_ = Read();
+Stick::Stick(int id) : Channel(id) {
+  value = 1500;
 }
 
 int Stick::Value() {
-  return value_;
+  return value;
 }
