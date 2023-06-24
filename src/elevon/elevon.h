@@ -8,7 +8,7 @@ private:
   int servo_pin_;
   Servo servo_;
 public:
-  Elevon(int servo_pin);
+  Elevon(int servoPin);
   void Initialize();
   void Move(int value);
   bool operator <(const Elevon& elevon) const {

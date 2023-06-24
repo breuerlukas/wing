@@ -1,6 +1,6 @@
 #include "elevon.h"
 
-Elevon::Elevon(int servo_pin) : servo_pin_(servo_pin) {
+Elevon::Elevon(int servoPin) : servo_pin_(servoPin) {
 
 }
 

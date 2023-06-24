@@ -11,7 +11,7 @@ private:
   std::vector<int> right_elevon_temp_values_;
   std::vector<int> left_elevon_temp_values_;
 public:
-  Surfaces(Elevon* right_elevon_, Elevon* left_elevon_);
+  Surfaces(Elevon* rightElevon, Elevon* leftElevon);
   void Initialize();
   void PerformSyncMovement(int value);
   void PerformAsyncMovement(int value);

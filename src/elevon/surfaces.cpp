@@ -1,7 +1,7 @@
 #include "surfaces.h"
 
-Surfaces::Surfaces(Elevon* right_elevon, Elevon* left_elevon)
-: right_elevon_(right_elevon), left_elevon_(left_elevon) {
+Surfaces::Surfaces(Elevon* rightElevon, Elevon* leftElevon)
+  : right_elevon_(rightElevon), left_elevon_(leftElevon) {
 
 }
 
