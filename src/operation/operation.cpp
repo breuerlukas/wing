@@ -15,7 +15,7 @@ Operation::Operation(Transmitter* transmitter, Motion* motion, Engine* engine,
 }
 
 void Operation::Recalculate() {
-  //ApplyEngineThrust();
+  ApplyEngineThrust();
   ApplySurfaceMovement();
 }
 
@@ -24,15 +24,17 @@ void Operation::ApplyEngineThrust() {
     engine_->ApplyThrust(1000);
     return;
   }
-  engine_.ApplyThrust(transmitter_->ThrottleStick()->Value());
+  engine_->ApplyThrust(transmitter_->ThrottleStick()->Value());
 }
 
 void Operation::ApplySurfaceMovement() {
   int aileronStickValue = transmitter_->AileronStick()->Value();
   int elevatorStickValue = transmitter_->ElevatorStick()->Value();
+  float rollStabilizationFactor = (roll_stabilization_knob_->Value() - 1000) / (float) 1000;
+  float pitchStabilizationFactor = (pitch_stabilization_knob_->Value() - 1000) / (float) 1000;
   if (stabilization_switch_->State() == kOff) {
-    surfaces_->PerformAsyncMovement(((float) 90 / 500) * (aileronStickValue - 1500));
-    surfaces_->PerformSyncMovement(((float) 90 / 500) * (elevatorStickValue - 1500));
+    surfaces_->PerformAsyncMovement(((float) 90 / 500) * (aileronStickValue - 1500) * rollStabilizationFactor);
+    surfaces_->PerformSyncMovement(-((float) 90 / 500) * (elevatorStickValue - 1500) * pitchStabilizationFactor);
     surfaces_->Flush();
     return;
   }
@@ -42,11 +44,8 @@ void Operation::ApplySurfaceMovement() {
   float currentPitchAngle = motion_->Pitch();
   float rollDifference = desiredRollAngle - currentRollAngle;
   float pitchDifference = desiredPitchAngle - currentPitchAngle;
-  float rollStabilizationFactor = (roll_stabilization_knob_->Value() - 1000) / (float) 1000;
-  float pitchStabilizationFactor = (pitch_stabilization_knob_->Value() - 1000) / (float) 1000;
-  Serial.println(rollStabilizationFactor);
   surfaces_->PerformAsyncMovement((int) (rollDifference * rollStabilizationFactor));
-  surfaces_->PerformSyncMovement((int) (pitchDifference * pitchStabilizationFactor));
+  surfaces_->PerformSyncMovement(-(int) (pitchDifference * pitchStabilizationFactor));
   surfaces_->Flush();
 }
 

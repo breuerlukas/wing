@@ -13,7 +13,7 @@ Plane::Plane(Transmitter* transmitter, Motion* motion, Engine* engine,
 
 void Plane::Initialize() {
   transmitter_->Initialize();
-  //engine_->Initialize();
+  engine_->Initialize();
   surfaces_->Initialize();
   motion_->Initialize();
 }

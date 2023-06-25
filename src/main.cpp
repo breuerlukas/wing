@@ -15,7 +15,7 @@ const int kEngineSwitchId = 4;
 const int kStabilizationSwitchId = 5;
 const int kRollStabilizationKnobId = 6;
 const int kPitchStabilizationKnobId = 7;
-const int kEnginePin = PIN0;
+const int kEnginePin = 4;
 const int kRightElevonPin = 2;
 const int kLeftElevonPin = 3;
 
