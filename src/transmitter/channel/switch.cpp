@@ -12,6 +12,6 @@ void Switch::Update(long value)  {
   state_ = (value > 1500) ? kOn : kOff;
 }
 
-State Switch::State() {
+SwitchState Switch::State() {
   return state_;
 }

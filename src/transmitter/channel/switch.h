@@ -3,18 +3,18 @@
 
 #include "channel.h"
 
-enum State {
+enum SwitchState {
   kOn,
   kOff
 };
 
 class Switch : public Channel {
 private:
-  State state_ = kOff;
+  SwitchState state_ = kOff;
 public:
   Switch(int pin);
   void Update(long value) override;
-  State State();
+  SwitchState State();
 };
 
 
