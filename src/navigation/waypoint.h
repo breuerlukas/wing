@@ -3,7 +3,7 @@
 
 #include "location.h"
 
-enum Task {
+enum WaypointTask {
   kDeparture,
   kInFlight,
   kArrival
@@ -12,7 +12,7 @@ enum Task {
 class Waypoint {
 private:
   Location location_;
-  Task task_;
+  WaypointTask task_;
 public:
   Waypoint(Location location, Task task);
 };
