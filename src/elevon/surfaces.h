@@ -1,5 +1,5 @@
-#ifndef PLANE_SURFACES_H
-#define PLANE_SURFACES_H
+#ifndef WING_SURFACES_H
+#define WING_SURFACES_H
 
 #include <ArduinoSTL.h>
 #include "elevon.h"
@@ -19,4 +19,4 @@ public:
 };
 
 
-#endif //PLANE_SURFACES_H
+#endif //WING_SURFACES_H

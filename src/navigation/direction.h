@@ -1,5 +1,5 @@
-#ifndef PLANE_DIRECTION_H
-#define PLANE_DIRECTION_H
+#ifndef WING_DIRECTION_H
+#define WING_DIRECTION_H
 
 class Direction {
 private:
@@ -12,4 +12,4 @@ public:
 };
 
 
-#endif //PLANE_DIRECTION_H
+#endif //WING_DIRECTION_H

@@ -1,5 +1,5 @@
-#ifndef PLANE_MISSION_H
-#define PLANE_MISSION_H
+#ifndef WING_MISSION_H
+#define WING_MISSION_H
 
 #include <ArduinoSTL.h>
 #include "waypoint.h"
@@ -16,4 +16,4 @@ public:
 };
 
 
-#endif //PLANE_MISSION_H
+#endif //WING_MISSION_H

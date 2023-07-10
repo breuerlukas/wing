@@ -1,5 +1,5 @@
-#ifndef PLANE_STICK_H
-#define PLANE_STICK_H
+#ifndef WING_STICK_H
+#define WING_STICK_H
 
 #include "channel.h"
 
@@ -10,4 +10,4 @@ public:
 };
 
 
-#endif //PLANE_STICK_H
+#endif //WING_STICK_H

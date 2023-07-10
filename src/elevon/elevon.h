@@ -1,5 +1,5 @@
-#ifndef PLANE_ELEVON_H
-#define PLANE_ELEVON_H
+#ifndef WING_ELEVON_H
+#define WING_ELEVON_H
 
 #include <Servo.h>
 
@@ -17,4 +17,4 @@ public:
 };
 
 
-#endif //PLANE_ELEVON_H
+#endif //WING_ELEVON_H

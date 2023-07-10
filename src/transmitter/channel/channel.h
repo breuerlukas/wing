@@ -1,5 +1,5 @@
-#ifndef PLANE_CHANNEL_H
-#define PLANE_CHANNEL_H
+#ifndef WING_CHANNEL_H
+#define WING_CHANNEL_H
 
 #include "Arduino.h"
 
@@ -15,4 +15,4 @@ public:
 };
 
 
-#endif //PLANE_CHANNEL_H
+#endif //WING_CHANNEL_H

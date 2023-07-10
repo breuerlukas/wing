@@ -1,5 +1,5 @@
-#ifndef PLANE_MOTION_H
-#define PLANE_MOTION_H
+#ifndef WING_MOTION_H
+#define WING_MOTION_H
 
 #include <cmath>
 #include <Arduino.h>
@@ -39,4 +39,4 @@ public:
 };
 
 
-#endif //PLANE_MOTION_H
+#endif //WING_MOTION_H

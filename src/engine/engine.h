@@ -1,5 +1,5 @@
-#ifndef PLANE_ENGINE_H
-#define PLANE_ENGINE_H
+#ifndef WING_ENGINE_H
+#define WING_ENGINE_H
 
 #include "Servo.h"
 
@@ -16,4 +16,4 @@ public:
 };
 
 
-#endif //PLANE_ENGINE_H
+#endif //WING_ENGINE_H

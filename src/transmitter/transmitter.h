@@ -1,5 +1,5 @@
-#ifndef PLANE_TRANSMITTER_H
-#define PLANE_TRANSMITTER_H
+#ifndef WING_TRANSMITTER_H
+#define WING_TRANSMITTER_H
 
 #include <cstddef>
 #include <IBusBM.h>
@@ -26,4 +26,4 @@ public:
 };
 
 
-#endif //PLANE_TRANSMITTER_H
+#endif //WING_TRANSMITTER_H

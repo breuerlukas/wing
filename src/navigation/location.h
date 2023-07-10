@@ -1,5 +1,5 @@
-#ifndef PLANE_LOCATION_H
-#define PLANE_LOCATION_H
+#ifndef WING_LOCATION_H
+#define WING_LOCATION_H
 
 #include <cmath>
 #include "direction.h"
@@ -18,4 +18,4 @@ public:
 };
 
 
-#endif //PLANE_LOCATION_H
+#endif //WING_LOCATION_H

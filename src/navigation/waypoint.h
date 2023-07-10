@@ -1,5 +1,5 @@
-#ifndef PLANE_WAYPOINT_H
-#define PLANE_WAYPOINT_H
+#ifndef WING_WAYPOINT_H
+#define WING_WAYPOINT_H
 
 #include "location.h"
 
@@ -18,4 +18,4 @@ public:
 };
 
 
-#endif //PLANE_WAYPOINT_H
+#endif //WING_WAYPOINT_H

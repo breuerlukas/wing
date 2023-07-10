@@ -1,5 +1,5 @@
-#ifndef PLANE_SWITCH_H
-#define PLANE_SWITCH_H
+#ifndef WING_SWITCH_H
+#define WING_SWITCH_H
 
 #include "channel.h"
 
@@ -18,4 +18,4 @@ public:
 };
 
 
-#endif //PLANE_SWITCH_H
+#endif //WING_SWITCH_H
