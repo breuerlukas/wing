@@ -12,9 +12,13 @@ enum WaypointTask {
 class Waypoint {
 private:
   Location location_;
+  double altitude_;
   WaypointTask task_;
 public:
-  Waypoint(Location location, Task task);
+  Waypoint(Location location, double altitude, WaypointTask task);
+  Location Location();
+  double Altitude();
+  WaypointTask Task();
 };
 
 
