@@ -15,7 +15,14 @@ void Autopilot::Initialize() {
 }
 
 void Autopilot::Tick() {
+  UpdateAutopilotState();
+  if (state_ == kDisengaged) {
+    return;
+  }
+}
 
+void Autopilot::UpdateAutopilotState() {
+  state_ = autopilot_switch_->State() == kOn ? kEngaged : kDisengaged;
 }
 
 AutopilotState Autopilot::State() {

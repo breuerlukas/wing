@@ -20,6 +20,7 @@ private:
   Surfaces* surfaces_;
   Switch* autopilot_switch_;
   AutopilotState state_ = kDisengaged;
+  void UpdateAutopilotState();
 public:
   Autopilot(Transmitter* transmitter, Motion* motion, Engine* engine,
   Surfaces* surfaces, Switch* autopilotSwitch);
