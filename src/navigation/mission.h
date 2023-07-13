@@ -4,14 +4,21 @@
 #include <ArduinoSTL.h>
 #include "waypoint.h"
 
+enum MissionStatus {
+  kActive,
+  kInactive
+};
+
 class Mission {
 private:
   std::vector<Waypoint> waypoints_;
   int waypoint_index_ = 0;
+  MissionStatus mission_status_ = kInactive;
 public:
   Mission(std::vector<Waypoint> waypoints);
-  void Skip();
-  void Direct();
+  void Begin();
+  void Next();
+  Waypoint Current();
   void Abort();
 };
 
