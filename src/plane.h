@@ -6,6 +6,7 @@
 #include "engine/engine.h"
 #include "elevon/surfaces.h"
 #include "operation/operation.h"
+#include "autopilot/autopilot.h"
 
 class Plane {
 private:
@@ -14,9 +15,10 @@ private:
   Engine* engine_;
   Surfaces* surfaces_;
   Operation* operation_;
+  Autopilot* autopilot_;
 public:
   Plane(Transmitter* transmitter, Motion* motion, Engine* engine,
-    Surfaces* surfaces, Operation* operation);
+    Surfaces* surfaces, Operation* operation, Autopilot* autopilot);
   void Initialize();
   void Tick();
 };

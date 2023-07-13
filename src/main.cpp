@@ -15,6 +15,7 @@ const int kEngineSwitchId = 4;
 const int kStabilizationSwitchId = 5;
 const int kRollStabilizationKnobId = 6;
 const int kPitchStabilizationKnobId = 7;
+const int kAutopilotSwitchId = 8;
 const int kEnginePin = 4;
 const int kRightElevonPin = 2;
 const int kLeftElevonPin = 3;
@@ -39,7 +40,11 @@ void setup() {
     new Elevon(kLeftElevonPin));
   Operation* operation = new Operation(transmitter, motion, engine, surfaces,
     engineSwitch, stabilizationSwitch, rollStabilizationKnob, pitchStabilizationKnob);
-  plane = new Plane(transmitter, motion, engine, surfaces, operation);
+  Switch* autopilotSwitch = new Switch(kAutopilotSwitchId);
+  transmitter->RegisterChannel(autopilotSwitch);
+  Autopilot* autopilot = new Autopilot(transmitter, motion, engine, surfaces,
+    autopilotSwitch);
+  plane = new Plane(transmitter, motion, engine, surfaces, operation, autopilot);
   plane->Initialize();
 }
 
