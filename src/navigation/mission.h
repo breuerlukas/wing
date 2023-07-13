@@ -20,6 +20,7 @@ public:
   void Next();
   Waypoint Current();
   void Abort();
+  MissionStatus Status();
 };
 
 

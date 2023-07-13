@@ -19,3 +19,7 @@ Waypoint Mission::Current() {
 void Mission::Abort() {
   mission_status_ = kInactive;
 }
+
+MissionStatus Mission::Status() {
+  return mission_status_;
+}
