@@ -1,12 +1,14 @@
 #include "autopilot.h"
 
 Autopilot::Autopilot(Transmitter* transmitter, Motion* motion, Engine* engine,
-  Surfaces* surfaces, Switch* autopilotSwitch)
+  Surfaces* surfaces, Switch* autopilotSwitch, Location* planeLocation, Mission* mission)
   : transmitter_(transmitter),
     motion_(motion),
     engine_(engine),
     surfaces_(surfaces),
-    autopilot_switch_(autopilotSwitch) {
+    autopilot_switch_(autopilotSwitch),
+    plane_location_(planeLocation),
+    mission_(mission) {
 
 }
 

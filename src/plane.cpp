@@ -1,11 +1,12 @@
 #include "plane.h"
 
 Plane::Plane(Transmitter* transmitter, Motion* motion, Engine* engine,
-  Surfaces* surfaces, Operation* operation, Autopilot* autopilot)
+  Surfaces* surfaces, Location* planeLocation, Operation* operation, Autopilot* autopilot)
   : transmitter_(transmitter),
     motion_(motion),
     engine_(engine),
     surfaces_(surfaces),
+    plane_location(planeLocation),
     operation_(operation),
     autopilot_(autopilot) {
 
@@ -17,12 +18,14 @@ void Plane::Initialize() {
   engine_->Initialize();
   surfaces_->Initialize();
   motion_->Initialize();
+  //TODO: INITIALIZE PLANE LOCATION
   autopilot_->Initialize();
 }
 
 void Plane::Tick() {
   transmitter_->Update();
   motion_->Recalculate();
+  //TODO: UPDATE PLANE LOCATION
   if (autopilot_->State() == kDisengaged) {
     operation_->Recalculate();
     return;

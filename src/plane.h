@@ -14,11 +14,13 @@ private:
   Motion* motion_;
   Engine* engine_;
   Surfaces* surfaces_;
+  Location* plane_location;
   Operation* operation_;
   Autopilot* autopilot_;
 public:
   Plane(Transmitter* transmitter, Motion* motion, Engine* engine,
-    Surfaces* surfaces, Operation* operation, Autopilot* autopilot);
+    Surfaces* surfaces, Location* planeLocation,
+    Operation* operation, Autopilot* autopilot);
   void Initialize();
   void Tick();
 };
