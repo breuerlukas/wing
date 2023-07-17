@@ -30,16 +30,20 @@ void Operation::ApplyEngineThrust() {
 void Operation::ApplySurfaceMovement() {
   int aileronStickValue = transmitter_->AileronStick()->Value();
   int elevatorStickValue = transmitter_->ElevatorStick()->Value();
-  float rollStabilizationFactor = (roll_stabilization_knob_->Value() - 1000) / (float) 1000;
-  float pitchStabilizationFactor = (pitch_stabilization_knob_->Value() - 1000) / (float) 1000;
   if (stabilization_switch_->State() == kOff) {
+    float rollStabilizationFactor = (roll_stabilization_knob_->Value() - 1000) / (float) 1000;
+    float pitchStabilizationFactor = (pitch_stabilization_knob_->Value() - 1000) / (float) 1000;
     surfaces_->PerformAsyncMovement(((float) 90 / 500) * (aileronStickValue - 1500) * rollStabilizationFactor);
     surfaces_->PerformSyncMovement(-((float) 90 / 500) * (elevatorStickValue - 1500) * pitchStabilizationFactor);
     surfaces_->Flush();
     return;
   }
-  float desiredRollAngle = CalculateRollAngle(aileronStickValue);
-  float desiredPitchAngle = CalculatePitchAngle(elevatorStickValue);
+  AdjustPlaneOrientation(CalculateRollAngle(aileronStickValue), CalculatePitchAngle(elevatorStickValue));
+}
+
+void Operation::AdjustPlaneOrientation(float desiredRollAngle, float desiredPitchAngle) {
+  float rollStabilizationFactor = (roll_stabilization_knob_->Value() - 1000) / (float) 1000;
+  float pitchStabilizationFactor = (pitch_stabilization_knob_->Value() - 1000) / (float) 1000;
   float currentRollAngle = motion_->Roll();
   float currentPitchAngle = motion_->Pitch();
   float rollDifference = desiredRollAngle - currentRollAngle;

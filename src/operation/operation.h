@@ -8,10 +8,7 @@
 #include "elevon/surfaces.h"
 #include "transmitter/channel/switch.h"
 #include "transmitter/channel/knob.h"
-
-#define MAX_BANK_ANGLE 60
-#define MAX_PITCH_ANGLE 45
-#define MIN_PITCH_ANGLE 45
+#include "limits/limits.h"
 
 class Operation {
 private:
@@ -25,6 +22,7 @@ private:
   Knob* pitch_stabilization_knob_;
   void ApplyEngineThrust();
   void ApplySurfaceMovement();
+  void AdjustPlaneOrientation(float desiredRollAngle, float desiredPitchAngle);
   float CalculateRollAngle(int aileronStickValue);
   float CalculatePitchAngle(int elevatorStickValue);
 public:
