@@ -26,9 +26,8 @@ void Plane::Tick() {
   transmitter_->Update();
   motion_->Recalculate();
   //TODO: UPDATE PLANE LOCATION
+  autopilot_->Tick();
   if (autopilot_->State() == kDisengaged) {
     operation_->Recalculate();
-    return;
   }
-  autopilot_->Tick();
 }
