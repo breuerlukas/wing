@@ -38,13 +38,16 @@ void setup() {
   Engine* engine = new Engine(kEnginePin);
   Surfaces* surfaces = new Surfaces(new Elevon(kRightElevonPin),
     new Elevon(kLeftElevonPin));
+  Location* planeLocation = new Location(0, 0);
   Operation* operation = new Operation(transmitter, motion, engine, surfaces,
     engineSwitch, stabilizationSwitch, rollStabilizationKnob, pitchStabilizationKnob);
   Switch* autopilotSwitch = new Switch(kAutopilotSwitchId);
   transmitter->RegisterChannel(autopilotSwitch);
+  std::vector<Waypoint> waypoints;
+  Mission* mission = new Mission(waypoints);
   Autopilot* autopilot = new Autopilot(transmitter, motion, engine, surfaces,
-    autopilotSwitch);
-  plane = new Plane(transmitter, motion, engine, surfaces, operation, autopilot);
+    autopilotSwitch, rollStabilizationKnob, pitchStabilizationKnob, planeLocation, mission);
+  plane = new Plane(transmitter, motion, engine, surfaces, planeLocation, operation, autopilot);
   plane->Initialize();
 }
 
