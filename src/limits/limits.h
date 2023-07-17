@@ -1,0 +1,8 @@
+#ifndef WING_LIMITS_H
+#define WING_LIMITS_H
+
+#define MAX_BANK_ANGLE 60
+#define MAX_PITCH_ANGLE 45
+#define MIN_PITCH_ANGLE 45
+
+#endif //WING_LIMITS_H
