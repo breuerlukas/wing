@@ -1,6 +1,6 @@
 #include "waypoint.h"
 
-Waypoint::Waypoint(Location location, double altitude, WaypointTask task)
+Waypoint::Waypoint(class Location location, double altitude, WaypointTask task)
   : location_(location),
     altitude_(altitude),
     task_(task) {
