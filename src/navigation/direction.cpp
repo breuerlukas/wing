@@ -1,10 +1,10 @@
 #include "direction.h"
 
-Direction::Direction(float bearing, double distance) : bearing_(bearing), distance_(distance) {
+Direction::Direction(double bearing, double distance) : bearing_(bearing), distance_(distance) {
 
 }
 
-float Direction::Bearing() {
+double Direction::Bearing() {
   return bearing_;
 }
 

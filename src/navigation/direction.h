@@ -3,11 +3,11 @@
 
 class Direction {
 private:
-  float bearing_;
+  double bearing_;
   double distance_;
 public:
-  Direction(float bearing, double distance);
-  float Bearing();
+  Direction(double bearing, double distance);
+  double Bearing();
   double Distance();
 };
 

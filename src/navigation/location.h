@@ -2,19 +2,19 @@
 #define WING_LOCATION_H
 
 #include <cmath>
+#include <TinyGPSPlus.h>
 #include "direction.h"
 
 class Location {
 private:
-  float latitude_;
-  float longitude_;
-  float DegreesToRadians(float degrees);
-  float RadiansToDegrees(float radians);
+  double latitude_;
+  double longitude_;
 public:
-  Location(float latitude, float longitude);
+  Location(double latitude, double longitude);
+  void Update(double latitude, double longitude);
   Direction DirectionTo(Location destination);
-  float Latitude();
-  float Longitude();
+  double Latitude();
+  double Longitude();
 };
 
 
