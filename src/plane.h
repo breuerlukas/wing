@@ -1,6 +1,8 @@
 #ifndef WING_PLANE_H
 #define WING_PLANE_H
 
+#include <TinyGPSPlus.h>
+#include <SoftwareSerial.h>
 #include "transmitter/transmitter.h"
 #include "motion/motion.h"
 #include "engine/engine.h"
@@ -14,13 +16,14 @@ private:
   Motion* motion_;
   Engine* engine_;
   Surfaces* surfaces_;
-  Location* plane_location;
+  TinyGPSPlus gps_;
+  SoftwareSerial software_serial_ = SoftwareSerial(4, 3);
+  Location* plane_location_;
   Operation* operation_;
   Autopilot* autopilot_;
 public:
   Plane(Transmitter* transmitter, Motion* motion, Engine* engine,
-    Surfaces* surfaces, Location* planeLocation,
-    Operation* operation, Autopilot* autopilot);
+    Surfaces* surfaces, Location* planeLocation, Operation* operation, Autopilot* autopilot);
   void Initialize();
   void Tick();
 };
