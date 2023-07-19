@@ -22,9 +22,9 @@ private:
   Knob* pitch_stabilization_knob_;
   void ApplyEngineThrust();
   void ApplySurfaceMovement();
-  void AdjustPlaneOrientation(float desiredRollAngle, float desiredPitchAngle);
   float CalculateRollAngle(int aileronStickValue);
   float CalculatePitchAngle(int elevatorStickValue);
+  void AdjustPlaneOrientation(float desiredRollAngle, float desiredPitchAngle);
 public:
   Operation(Transmitter* transmitter, Motion* motion, Engine* engine,
     Surfaces* surfaces, Switch* engineSwitch,  Switch* stabilizationSwitch,
