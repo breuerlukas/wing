@@ -9,6 +9,10 @@ void Mission::Begin() {
 }
 
 void Mission::Next() {
+  if (waypoint_index_ + 1 == waypoints_.size()) {
+    Abort();
+    return;
+  }
   waypoint_index_++;
 }
 
