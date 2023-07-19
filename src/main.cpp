@@ -38,6 +38,7 @@ void setup() {
   Engine* engine = new Engine(kEnginePin);
   Surfaces* surfaces = new Surfaces(new Elevon(kRightElevonPin),
     new Elevon(kLeftElevonPin));
+  TinyGPSPlus* gps = new TinyGPSPlus();
   Location* planeLocation = new Location(0, 0);
   Operation* operation = new Operation(transmitter, motion, engine, surfaces,
     engineSwitch, stabilizationSwitch, rollStabilizationKnob, pitchStabilizationKnob);
@@ -46,8 +47,8 @@ void setup() {
   std::vector<Waypoint> waypoints;
   Mission* mission = new Mission(waypoints);
   Autopilot* autopilot = new Autopilot(transmitter, motion, engine, surfaces,
-    autopilotSwitch, rollStabilizationKnob, pitchStabilizationKnob, planeLocation, mission);
-  plane = new Plane(transmitter, motion, engine, surfaces, planeLocation, operation, autopilot);
+    autopilotSwitch, rollStabilizationKnob, pitchStabilizationKnob, gps, planeLocation, mission);
+  plane = new Plane(transmitter, motion, engine, surfaces, gps, planeLocation, operation, autopilot);
   plane->Initialize();
 }
 
