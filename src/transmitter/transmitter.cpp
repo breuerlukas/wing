@@ -1,12 +1,15 @@
 #include "transmitter.h"
 
-Transmitter::Transmitter(Stick* throttleStick, Stick* elevatorStick, Stick* aileronStick)
+Transmitter::Transmitter(Stick* throttleStick, Stick* elevatorStick,
+  Stick* aileronStick, Stick* rudderStick)
   : throttle_stick_(throttleStick),
     elevator_stick_(elevatorStick),
-    aileron_stick_(aileronStick) {
+    aileron_stick_(aileronStick),
+    rudder_stick_(rudderStick) {
   RegisterChannel(throttleStick);
   RegisterChannel(elevatorStick);
   RegisterChannel(aileronStick);
+  RegisterChannel(rudderStick);
 }
 
 void Transmitter::RegisterChannel(Channel* channel) {
@@ -34,7 +37,11 @@ Stick* Transmitter::ElevatorStick() {
 Stick* Transmitter::AileronStick() {
   return aileron_stick_;
 }
+Stick* Transmitter::RudderStick() {
+  return rudder_stick_;
+}
 
 void Transmitter::RemoveChannel(Channel* channel) {
-  channels_.erase(std::remove(channels_.begin(), channels_.end(), channel), channels_.end());
+  channels_.erase(std::remove(channels_.begin(), channels_.end(), channel),
+    channels_.end());
 }
