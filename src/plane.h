@@ -6,14 +6,15 @@
 #include "transmitter/transmitter.h"
 #include "motion/motion.h"
 #include "engine/engine.h"
-#include "elevon/surfaces.h"
+#include "surface/surfaces.h"
 #include "operation/operation.h"
 #include "autopilot/autopilot.h"
 
 class Plane {
 private:
   Transmitter* transmitter_;
-  Motion* motion_;
+  //Motion* motion_;
+  Imu* imu_;
   Engine* engine_;
   Surfaces* surfaces_;
   TinyGPSPlus* gps_;
@@ -22,7 +23,7 @@ private:
   Operation* operation_;
   Autopilot* autopilot_;
 public:
-  Plane(Transmitter* transmitter, Motion* motion, Engine* engine,
+  Plane(Transmitter* transmitter, Imu* imu, /*Motion* motion, */Engine* engine,
     Surfaces* surfaces, TinyGPSPlus* gps, Location* planeLocation,
     Operation* operation, Autopilot* autopilot);
   void Initialize();
