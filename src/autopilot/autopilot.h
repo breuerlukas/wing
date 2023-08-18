@@ -5,7 +5,7 @@
 #include "transmitter/transmitter.h"
 #include "motion/motion.h"
 #include "engine/engine.h"
-#include "elevon/surfaces.h"
+#include "surface/surfaces.h"
 #include "transmitter/channel/switch.h"
 #include "transmitter/channel/knob.h"
 #include "navigation/location.h"

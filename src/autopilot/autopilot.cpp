@@ -60,8 +60,8 @@ void Autopilot::AdjustPlaneOrientation(float desiredRollAngle, float desiredPitc
   float currentPitchAngle = motion_->Pitch();
   float rollDifference = desiredRollAngle - currentRollAngle;
   float pitchDifference = desiredPitchAngle - currentPitchAngle;
-  surfaces_->PerformAsyncMovement((int) (rollDifference * rollStabilizationFactor));
-  surfaces_->PerformSyncMovement(-(int) (pitchDifference * pitchStabilizationFactor));
+  //surfaces_->PerformAsyncMovement((int) (rollDifference * rollStabilizationFactor));
+  //surfaces_->PerformSyncMovement(-(int) (pitchDifference * pitchStabilizationFactor));
   surfaces_->Flush();
 }
 
