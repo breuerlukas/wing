@@ -81,7 +81,7 @@ void Operation::AdjustPlaneRollAngle(float desiredRollAngle) {
   elapsedTime = (time - timePrev) / 1000;
   float rollStabilizationFactor = (roll_stabilization_knob_->Value() - 1000) / (float) 1000;
   //float currentRollAngle = motion_->Roll();
-  float currentRollAngle = -imu_->roll();
+  float currentRollAngle = imu_->roll();
   float rollDifference = desiredRollAngle - currentRollAngle;
   //pid_p = (rollDifference < 0 ? -1 : 1) * MIN(pow(fabs((rollDifference * kp) / MAX_BANK_ANGLE), 1.5), 1.2) * MAX_BANK_ANGLE * 2;
   pid_p = rollDifference * kp;
@@ -91,7 +91,7 @@ void Operation::AdjustPlaneRollAngle(float desiredRollAngle) {
   pid_d = kd * (((rollDifference - previous_error) - fabs(desiredRollAngle - previous_desired_roll)) / elapsedTime);
   PID = pid_p + pid_i + pid_d;
   //Serial.println(PID);
-  surfaces_->PerformAsyncRuddervatorMovement((int) (PID * 2 * rollStabilizationFactor));
+  surfaces_->PerformAsyncAileronMovement((int) (PID * 2 * rollStabilizationFactor));
   previous_error = rollDifference;
   previous_desired_roll = desiredRollAngle;
 }
