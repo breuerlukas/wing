@@ -7,7 +7,6 @@ class Ruddervator {
 private:
   int servo_pin_;
   Servo servo_;
-  int previous_servo_value_;
 public:
   Ruddervator(int servoPin);
   void Initialize();

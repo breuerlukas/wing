@@ -7,7 +7,6 @@ class Aileron {
 private:
   int servo_pin_;
   Servo servo_;
-  int previous_servo_value_;
 public:
   Aileron(int servoPin);
   void Initialize();

@@ -9,9 +9,5 @@ void Aileron::Initialize() {
 }
 
 void Aileron::Move(int value) {
-  if (previous_servo_value_ == value) {
-    return;
-  }
   servo_.write(value);
-  previous_servo_value_ = value;
 }
