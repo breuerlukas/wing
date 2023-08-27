@@ -24,6 +24,7 @@ const int kEnginePin = 4;
 const int kAileronPin = 5;
 
 Plane* plane;
+long previousTime;
 
 void setup() {
   //Serial.begin(9600);
@@ -60,5 +61,10 @@ void setup() {
 }
 
 void loop() {
+  long time = millis();
+  if (previousTime + 10 > time) {
+    return;
+  }
+  previousTime = time;
   plane->Tick();
 }
