@@ -1,10 +1,10 @@
 #include "autopilot.h"
 
-Autopilot::Autopilot(Transmitter* transmitter, Motion* motion, Engine* engine,
+Autopilot::Autopilot(Transmitter* transmitter, Imu* imu, Engine* engine,
   Surfaces* surfaces, Switch* autopilotSwitch, Knob* rollStabilizationKnob,
   Knob* pitchStabilizationKnob, TinyGPSPlus* gps, Location* planeLocation, Mission* mission)
   : transmitter_(transmitter),
-    motion_(motion),
+    imu_(imu),
     engine_(engine),
     surfaces_(surfaces),
     autopilot_switch_(autopilotSwitch),
@@ -56,8 +56,8 @@ float Autopilot::CalculatePitchAngle(double pitchAngleDifference) {
 void Autopilot::AdjustPlaneOrientation(float desiredRollAngle, float desiredPitchAngle) {
   float rollStabilizationFactor = (roll_stabilization_knob_->Value() - 1000) / (float) 1000;
   float pitchStabilizationFactor = (pitch_stabilization_knob_->Value() - 1000) / (float) 1000;
-  float currentRollAngle = motion_->Roll();
-  float currentPitchAngle = motion_->Pitch();
+  float currentRollAngle = imu_->roll();
+  float currentPitchAngle = imu_->pitch();
   float rollDifference = desiredRollAngle - currentRollAngle;
   float pitchDifference = desiredPitchAngle - currentPitchAngle;
   //surfaces_->PerformAsyncMovement((int) (rollDifference * rollStabilizationFactor));

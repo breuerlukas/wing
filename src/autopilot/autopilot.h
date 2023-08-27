@@ -3,7 +3,7 @@
 
 #include <cmath>
 #include "transmitter/transmitter.h"
-#include "motion/motion.h"
+#include "imu/imu.h"
 #include "engine/engine.h"
 #include "surface/surfaces.h"
 #include "transmitter/channel/switch.h"
@@ -22,7 +22,7 @@ enum AutopilotState {
 class Autopilot {
 private:
   Transmitter* transmitter_;
-  Motion* motion_;
+  Imu* imu_;
   Engine* engine_;
   Surfaces* surfaces_;
   Switch* autopilot_switch_;
@@ -37,7 +37,7 @@ private:
   float CalculatePitchAngle(double pitchAngleDifference);
   void AdjustPlaneOrientation(float desiredRollAngle, float desiredPitchAngle);
 public:
-  Autopilot(Transmitter* transmitter, Motion* motion, Engine* engine,
+  Autopilot(Transmitter* transmitter, Imu* imu, Engine* engine,
   Surfaces* surfaces, Switch* autopilotSwitch, Knob* rollStabilizationKnob,
   Knob* pitchStabilizationKnob, TinyGPSPlus* gps, Location* planeLocation, Mission* mission);
   void Initialize();

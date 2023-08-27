@@ -3,8 +3,7 @@
 #include "transmitter/channel/stick.h"
 #include "transmitter/channel/switch.h"
 #include "transmitter/channel/knob.h"
-#include "motion/motion.h"
-#include "motion/imu.h"
+#include "imu/imu.h"
 #include "engine/engine.h"
 #include "surface/surfaces.h"
 #include "plane.h"
@@ -27,7 +26,7 @@ const int kAileronPin = 5;
 Plane* plane;
 
 void setup() {
-  //Serial.begin(115200);
+  //Serial.begin(9600);
   Transmitter* transmitter = new Transmitter(new Stick(kThrottleStickId),
     new Stick(kElevatorStickId), new Stick(kAileronStickId),
     new Stick(kRudderStickId));
@@ -41,23 +40,22 @@ void setup() {
   transmitter->RegisterChannel(rollStabilizationKnob);
   Knob* pitchStabilizationKnob = new Knob(kPitchStabilizationKnobId);
   transmitter->RegisterChannel(pitchStabilizationKnob);
-  Motion* motion = new Motion();
   Imu* imu = new Imu();
   Engine* engine = new Engine(kEnginePin);
   Surfaces* surfaces = new Surfaces(new Aileron(kAileronPin),
     new Ruddervator(kRightRuddervatorPin), new Ruddervator(kLeftRuddervatorPin));
   TinyGPSPlus* gps = new TinyGPSPlus();
   Location* planeLocation = new Location(0, 0);
-  Operation* operation = new Operation(transmitter, imu, /*motion, */engine, surfaces,
+  Operation* operation = new Operation(transmitter, imu, engine, surfaces,
     engineSwitch, stabilizationSwitch, pitchStabilizationSwitch,
     rollStabilizationKnob, pitchStabilizationKnob);
   Switch* autopilotSwitch = new Switch(kAutopilotSwitchId);
   transmitter->RegisterChannel(autopilotSwitch);
   std::vector<Waypoint> waypoints;
   Mission* mission = new Mission(waypoints);
-  Autopilot* autopilot = new Autopilot(transmitter, motion, engine, surfaces,
+  Autopilot* autopilot = new Autopilot(transmitter, imu, engine, surfaces,
     autopilotSwitch, rollStabilizationKnob, pitchStabilizationKnob, gps, planeLocation, mission);
-  plane = new Plane(transmitter, imu, /*motion, */engine, surfaces, gps, planeLocation, operation, autopilot);
+  plane = new Plane(transmitter, imu, engine, surfaces, gps, planeLocation, operation, autopilot);
   plane->Initialize();
 }
 
