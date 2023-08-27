@@ -4,7 +4,6 @@
 #include <TinyGPSPlus.h>
 #include <SoftwareSerial.h>
 #include "transmitter/transmitter.h"
-#include "motion/motion.h"
 #include "engine/engine.h"
 #include "surface/surfaces.h"
 #include "operation/operation.h"
@@ -13,7 +12,6 @@
 class Plane {
 private:
   Transmitter* transmitter_;
-  //Motion* motion_;
   Imu* imu_;
   Engine* engine_;
   Surfaces* surfaces_;
@@ -23,7 +21,7 @@ private:
   Operation* operation_;
   Autopilot* autopilot_;
 public:
-  Plane(Transmitter* transmitter, Imu* imu, /*Motion* motion, */Engine* engine,
+  Plane(Transmitter* transmitter, Imu* imu, Engine* engine,
     Surfaces* surfaces, TinyGPSPlus* gps, Location* planeLocation,
     Operation* operation, Autopilot* autopilot);
   void Initialize();
