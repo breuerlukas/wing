@@ -17,10 +17,11 @@ void Transmitter::RegisterChannel(Channel* channel) {
 }
 
 void Transmitter::Initialize() {
-  bus_.begin(Serial);
+  bus_.begin(Serial, IBUSBM_NOTIMER);
 }
 
 void Transmitter::Update() {
+  bus_.loop();
   for (int i = 0; i < channels_.size(); i++) {
     channels_[i]->Update(bus_.readChannel(channels_[i]->Id()));
   }
