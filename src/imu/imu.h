@@ -32,7 +32,7 @@
 // When enabled, the aircraft does not have to be level during calibration.
 // Instead, the net acceleration vector will be used to determine initial
 // orientation.
-//#define ENABLE_GRAVITY_REFERENCED_ZERO
+#define ENABLE_GRAVITY_REFERENCED_ZERO
 //#define WAIT_FOR_REST
 
 

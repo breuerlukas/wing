@@ -21,7 +21,7 @@ void Imu::calibrate()
 
     int16_t x_prev, y_prev, z_prev;
 
-    // Wait until the derivative of the acceleration along each axis is below 
+    // Wait until the derivative of the acceleration along each axis is below
     // the MIN_ACCEL_DIFF for the duration of the PRE_CALIBRATION_REST_TIMER
 #ifdef WAIT_FOR_REST
     timer = 0;
@@ -137,8 +137,6 @@ void Imu::calibrate_accel()
 
     bool led_state;
 
-    Serial.println("Calibrating Accelerometer...");
-
     float x = 0;
     float y = 0;
     float z = 0;
@@ -157,22 +155,13 @@ void Imu::calibrate_accel()
         y += mpu.get(ACCELY) / (float)ACCEL_CALIBRATION_READINGS;
         z += mpu.get(ACCELZ) / (float)ACCEL_CALIBRATION_READINGS;
 
-        // rapidly flash the led indicator 
+        // rapidly flash the led indicator
         if (status_led)
         {
             if (++count % 25 == 0) led_state = !led_state;
             digitalWrite(status_led, led_state);
         }
     }
-
-    // print the averages to the serial monitor
-    Serial.print(" x: ");
-    Serial.print(x);
-    Serial.print(" y: ");
-    Serial.print(y);
-    Serial.print(" z: ");
-    Serial.print(z - Mpu6050::TICKS_PER_G);
-    Serial.println();
 }
 
 // Computes the IMU's orientation
@@ -182,15 +171,17 @@ void Imu::run()
 
     static bool start = true;
 
+    unsigned long time = micros();
+
     if (start)
     {
         start = false;
-        timer = micros();
+        timer = time;
     }
     else
     {
-        float t_delta = (micros() - timer) / 1000000.0; // t_delta units: seconds
-        timer = micros();
+        float t_delta = (time - timer) / 1000000.0; // t_delta units: seconds
+        timer = time;
 
         Vector w;
         w.x = (mpu.get(GYROX) - x_zero) * Mpu6050::TICKS_PER_DEGREE * RADIANS_PER_DEGREE;
@@ -226,7 +217,7 @@ void Imu::run()
 
 #ifdef ENABLE_GYRO_DRIFT_FILTER
         // construct a 3 dimensional vector representing the net acceration on the aircraft
-        Vector net_accel; 
+        Vector net_accel;
         net_accel.x = (float)mpu.get(ACCELX) - ACCELX_LEVEL_READING;
         net_accel.y = (float)mpu.get(ACCELY) - ACCELY_LEVEL_READING;
         net_accel.z = (float)mpu.get(ACCELZ) - ACCELZ_LEVEL_READING;
@@ -238,10 +229,10 @@ void Imu::run()
         float x_angle_accel_current = asin(net_accel.y / accel_norm) * (1 / RADIANS_PER_DEGREE);
         float y_angle_accel_current = asin(net_accel.x / accel_norm) * (1 / RADIANS_PER_DEGREE) * -1;
 
-        // Apply an IIR filter to the accelerometer angles for noise reduction 
-        x_angle_accel = x_angle_accel * ACCEL_FILTER_GAIN + 
+        // Apply an IIR filter to the accelerometer angles for noise reduction
+        x_angle_accel = x_angle_accel * ACCEL_FILTER_GAIN +
                         x_angle_accel_current * (1 - ACCEL_FILTER_GAIN);
-        y_angle_accel = y_angle_accel * ACCEL_FILTER_GAIN + 
+        y_angle_accel = y_angle_accel * ACCEL_FILTER_GAIN +
                         y_angle_accel_current * (1 - ACCEL_FILTER_GAIN);
 
         // Apply the antidrift filter by computring a weighted average between the angle
@@ -251,7 +242,7 @@ void Imu::run()
 
 #endif // ENABLE_GYRO_DRIFT_FILTER
 
-        // inevert axes if necessary 
+        // inevert axes if necessary
 #ifdef INVERT_ROLL_AXIS
         x_angle *= -1;
 #endif
