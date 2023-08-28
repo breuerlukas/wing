@@ -4,8 +4,10 @@
 #include "transmitter/channel/switch.h"
 #include "transmitter/channel/knob.h"
 #include "imu/imu.h"
+#include "altimeter/altimeter.h"
 #include "engine/engine.h"
 #include "surface/surfaces.h"
+#include "pid/pid.h"
 #include "plane.h"
 
 const int kThrottleStickId = 2;
@@ -42,21 +44,26 @@ void setup() {
   Knob* pitchStabilizationKnob = new Knob(kPitchStabilizationKnobId);
   transmitter->RegisterChannel(pitchStabilizationKnob);
   Imu* imu = new Imu();
+  Altimeter* altimeter = new Altimeter(1013);
   Engine* engine = new Engine(kEnginePin);
   Surfaces* surfaces = new Surfaces(new Aileron(kAileronPin),
     new Ruddervator(kRightRuddervatorPin), new Ruddervator(kLeftRuddervatorPin));
   TinyGPSPlus* gps = new TinyGPSPlus();
   Location* planeLocation = new Location(0, 0);
-  Operation* operation = new Operation(transmitter, imu, engine, surfaces,
+  Pid* rollPidController = new Pid(1, 0, 0.1);
+  Pid* pitchPidController = new Pid(0, 0, 0);
+  Operation* operation = new Operation(transmitter, imu, altimeter, engine, surfaces,
     engineSwitch, stabilizationSwitch, pitchStabilizationSwitch,
-    rollStabilizationKnob, pitchStabilizationKnob);
+    rollStabilizationKnob, pitchStabilizationKnob, rollPidController, pitchPidController);
   Switch* autopilotSwitch = new Switch(kAutopilotSwitchId);
   transmitter->RegisterChannel(autopilotSwitch);
   std::vector<Waypoint> waypoints;
   Mission* mission = new Mission(waypoints);
   Autopilot* autopilot = new Autopilot(transmitter, imu, engine, surfaces,
-    autopilotSwitch, rollStabilizationKnob, pitchStabilizationKnob, gps, planeLocation, mission);
-  plane = new Plane(transmitter, imu, engine, surfaces, gps, planeLocation, operation, autopilot);
+    autopilotSwitch, rollStabilizationKnob, pitchStabilizationKnob, gps,
+    planeLocation, mission);
+  plane = new Plane(transmitter, imu, altimeter, engine, surfaces, gps,
+    planeLocation, operation, autopilot);
   plane->Initialize();
 }
 
