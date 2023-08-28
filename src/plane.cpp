@@ -1,9 +1,11 @@
 #include "plane.h"
 
-Plane::Plane(Transmitter* transmitter, Imu* imu, Engine* engine,
-  Surfaces* surfaces, TinyGPSPlus* gps, Location* planeLocation, Operation* operation, Autopilot* autopilot)
+Plane::Plane(Transmitter* transmitter, Imu* imu, Altimeter* altimeter,
+  Engine* engine, Surfaces* surfaces, TinyGPSPlus* gps, Location* planeLocation,
+  Operation* operation, Autopilot* autopilot)
   : transmitter_(transmitter),
     imu_(imu),
+    altimeter_(altimeter),
     engine_(engine),
     surfaces_(surfaces),
     gps_(gps),
@@ -16,6 +18,7 @@ Plane::Plane(Transmitter* transmitter, Imu* imu, Engine* engine,
 void Plane::Initialize() {
   delay(2000);
   imu_->calibrate();
+  altimeter_->Initialize();
   transmitter_->Initialize();
   engine_->Initialize();
   surfaces_->Initialize();
@@ -26,6 +29,7 @@ void Plane::Initialize() {
 void Plane::Tick() {
   transmitter_->Update();
   imu_->run();
+  altimeter_->Tick();
   operation_->Recalculate();
   /*while (software_serial_.available() > 0) {
     gps_->encode(software_serial_.read());
