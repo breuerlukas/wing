@@ -7,13 +7,14 @@ Pid::Pid(float pWeight, float iWeight, float dWeight)
 
 }
 
-float Pid::Calculate(float error) {
+float Pid::Calculate(float currentState, float error) {
   long time = millis();
-  long elapsedTime = (time - previous_time_) / 1000;
+  float elapsedTime = (float) (time - previous_time_) / 1000;
   p_value_ = p_weight_ * error;
-  i_value_ = i_value_ + (i_weight_ * error);;
-  d_value_ = d_weight_ * ((previous_error_ - error) / elapsedTime);
+  i_value_ = i_value_ + (i_weight_ * error);
+  d_value_ = d_weight_ * ((previous_state_ - currentState) / elapsedTime);
+  float pid = p_value_ + i_value_ + d_value_;
   previous_time_ = time;
-  previous_error_ = error;
-  return p_value_ + i_value_ + d_value_;
+  previous_state_ = currentState;
+  return pid;
 }
