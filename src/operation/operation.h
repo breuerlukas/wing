@@ -1,24 +1,25 @@
 #ifndef WING_OPERATION_H
 #define WING_OPERATION_H
 
-//#define MAX(x, y) (((x) > (y)) ? (x) : (y))
-//#define MIN(x, y) (((x) < (y)) ? (x) : (y))
+#define MAX(x, y) (((x) > (y)) ? (x) : (y))
+#define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
 #include <cmath>
 #include "transmitter/transmitter.h"
-#include "motion/motion.h"
-#include "motion/imu.h"
+#include "imu/imu.h"
+#include "altimeter/altimeter.h"
 #include "engine/engine.h"
 #include "surface/surfaces.h"
 #include "transmitter/channel/switch.h"
 #include "transmitter/channel/knob.h"
 #include "limits/limits.h"
+#include "pid/pid.h"
 
 class Operation {
 private:
   Transmitter* transmitter_;
-  //Motion* motion_;
   Imu* imu_;
+  Altimeter* altimeter_;
   Engine* engine_;
   Surfaces* surfaces_;
   Switch* engine_switch_;
@@ -26,14 +27,8 @@ private:
   Switch* pitch_stabilization_switch_;
   Knob* roll_stabilization_knob_;
   Knob* pitch_stabilization_knob_;
-  float elapsedTime, time, timePrev;
-  float PID, previous_error, previous_desired_roll;
-  float pid_p=0;
-  float pid_i=0;
-  float pid_d=0;
-  double kp=1;
-  double ki=0;
-  double kd=0.1;
+  Pid* roll_pid_controller_;
+  Pid* pitch_pid_controller_;
   void ApplyEngineThrust();
   void ApplySurfaceMovement();
   float CalculateRollAngle(int aileronStickValue);
@@ -42,10 +37,10 @@ private:
   void AdjustPlaneRollAngle(float desiredRollAngle);
   //void AdjustPlanePitchAngle(float desiredPitchAngle);
 public:
-  Operation(Transmitter* transmitter, Imu* imu, /*Motion* motion, */Engine* engine,
+  Operation(Transmitter* transmitter, Imu* imu, Altimeter* altimeter, Engine* engine,
     Surfaces* surfaces, Switch* engineSwitch, Switch* stabilizationSwitch,
     Switch* pitchStabilizationSwitch, Knob* rollStabilizationKnob,
-    Knob* pitchStabilizationKnob);
+    Knob* pitchStabilizationKnob, Pid* rollPidController, Pid* pitchPidController);
   void Recalculate();
 };
 
