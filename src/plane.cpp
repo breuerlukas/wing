@@ -18,7 +18,8 @@ Plane::Plane(Transmitter* transmitter, Imu* imu, Altimeter* altimeter,
 void Plane::Initialize() {
   delay(2000);
   imu_->calibrate();
-  altimeter_->Initialize();
+  //altimeter_->Initialize();
+  //altimeter_->Calibrate();
   transmitter_->Initialize();
   engine_->Initialize();
   surfaces_->Initialize();
@@ -29,7 +30,7 @@ void Plane::Initialize() {
 void Plane::Tick() {
   transmitter_->Update();
   imu_->run();
-  altimeter_->Tick();
+  //altimeter_->Tick();
   operation_->Recalculate();
   /*while (software_serial_.available() > 0) {
     gps_->encode(software_serial_.read());
