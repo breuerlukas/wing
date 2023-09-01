@@ -1,7 +1,7 @@
 #include "autopilot.h"
 
 Autopilot::Autopilot(Transmitter* transmitter, Imu* imu, Engine* engine,
-  Surfaces* surfaces, Switch* autopilotSwitch, Knob* rollStabilizationKnob,
+  Surfaces* surfaces, DualSwitch* autopilotSwitch, Knob* rollStabilizationKnob,
   Knob* pitchStabilizationKnob, TinyGPSPlus* gps, Location* planeLocation, Mission* mission)
   : transmitter_(transmitter),
     imu_(imu),

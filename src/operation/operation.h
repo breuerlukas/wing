@@ -10,7 +10,8 @@
 #include "altimeter/altimeter.h"
 #include "engine/engine.h"
 #include "surface/surfaces.h"
-#include "transmitter/channel/switch.h"
+#include "transmitter/channel/dual-switch.h"
+#include "transmitter/channel/triple-switch.h"
 #include "transmitter/channel/knob.h"
 #include "limits/limits.h"
 #include "pid/pid.h"
@@ -22,8 +23,8 @@ private:
   Altimeter* altimeter_;
   Engine* engine_;
   Surfaces* surfaces_;
-  Switch* engine_switch_;
-  Switch* stabilization_switch_;
+  DualSwitch* engine_switch_;
+  TripleSwitch* stabilization_switch_;
   Knob* roll_stabilization_knob_;
   Knob* pitch_stabilization_knob_;
   Pid* roll_pid_controller_;
@@ -37,7 +38,7 @@ private:
   void AdjustPlanePitchAngle(float desiredPitchAngle);
 public:
   Operation(Transmitter* transmitter, Imu* imu, Altimeter* altimeter, Engine* engine,
-    Surfaces* surfaces, Switch* engineSwitch, Switch* stabilizationSwitch,
+    Surfaces* surfaces, DualSwitch* engineSwitch, TripleSwitch* stabilizationSwitch,
     Knob* rollStabilizationKnob, Knob* pitchStabilizationKnob,
     Pid* rollPidController, Pid* pitchPidController);
   void Recalculate();

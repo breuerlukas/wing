@@ -1,7 +1,8 @@
 #include <Arduino.h>
 #include "transmitter/transmitter.h"
 #include "transmitter/channel/stick.h"
-#include "transmitter/channel/switch.h"
+#include "transmitter/channel/dual-switch.h"
+#include "transmitter/channel/triple-switch.h"
 #include "transmitter/channel/knob.h"
 #include "imu/imu.h"
 #include "altimeter/altimeter.h"
@@ -32,11 +33,11 @@ void setup() {
   Transmitter* transmitter = new Transmitter(new Stick(kThrottleStickId),
     new Stick(kElevatorStickId), new Stick(kAileronStickId),
     new Stick(kRudderStickId));
-  Switch* engineSwitch = new Switch(kEngineSwitchId);
+  DualSwitch* engineSwitch = new DualSwitch(kEngineSwitchId);
   transmitter->RegisterChannel(engineSwitch);
-  Switch* stabilizationSwitch = new Switch(kStabilizationSwitchId);
+  TripleSwitch* stabilizationSwitch = new TripleSwitch(kStabilizationSwitchId);
   transmitter->RegisterChannel(stabilizationSwitch);
-  Switch* autopilotSwitch = new Switch(kAutopilotSwitchId);
+  DualSwitch* autopilotSwitch = new DualSwitch(kAutopilotSwitchId);
   transmitter->RegisterChannel(autopilotSwitch);
   Knob* rollStabilizationKnob = new Knob(kRollStabilizationKnobId);
   transmitter->RegisterChannel(rollStabilizationKnob);

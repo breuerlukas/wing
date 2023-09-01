@@ -1,8 +1,8 @@
 #include "operation.h"
 
 Operation::Operation(Transmitter* transmitter, Imu* imu, Altimeter* altimeter,
-  Engine* engine, Surfaces* surfaces, Switch* engineSwitch,
-  Switch* stabilizationSwitch, Knob* rollStabilizationKnob,
+  Engine* engine, Surfaces* surfaces, DualSwitch* engineSwitch,
+  TripleSwitch* stabilizationSwitch, Knob* rollStabilizationKnob,
   Knob* pitchStabilizationKnob, Pid* rollPidController, Pid* pitchPidController)
   : transmitter_(transmitter),
     imu_(imu),
@@ -36,14 +36,17 @@ void Operation::ApplySurfaceMovement() {
   int elevatorStickValue = transmitter_->ElevatorStick()->Value();
   int rudderStickValue = transmitter_->RudderStick()->Value();
   surfaces_->PerformAsyncRuddervatorMovement(-((float) 90 / 500) * (rudderStickValue - 1500) * 0.5);
-  if (stabilization_switch_->State() == kOff) {
+  if (stabilization_switch_->State() == kUp) {
     surfaces_->PerformAsyncAileronMovement(((float) 90 / 500) * (aileronStickValue - 1500) * 0.5);
     surfaces_->PerformSyncRuddervatorMovement(-((float) 90 / 500) * (elevatorStickValue - 1500) * 0.5);
     surfaces_->Flush();
     return;
   }
-  AdjustPlaneOrientation(CalculateRollAngle(aileronStickValue),
-    CalculatePitchAngle(elevatorStickValue));
+  if (stabilization_switch_->State() == kDown) {
+    AdjustPlaneOrientation(CalculateRollAngle(aileronStickValue),
+      CalculatePitchAngle(elevatorStickValue));
+    return;
+  }
 }
 
 float Operation::CalculateRollAngle(int aileronStickValue) {
