@@ -18,7 +18,6 @@ const int kEngineSwitchId = 4;
 const int kStabilizationSwitchId = 5;
 const int kRollStabilizationKnobId = 6;
 const int kPitchStabilizationKnobId = 7;
-const int kPitchStabilizationSwitchId = 8;
 const int kAutopilotSwitchId = 9;
 const int kRightRuddervatorPin = 2;
 const int kLeftRuddervatorPin = 3;
@@ -37,8 +36,8 @@ void setup() {
   transmitter->RegisterChannel(engineSwitch);
   Switch* stabilizationSwitch = new Switch(kStabilizationSwitchId);
   transmitter->RegisterChannel(stabilizationSwitch);
-  Switch* pitchStabilizationSwitch = new Switch(kPitchStabilizationSwitchId);
-  transmitter->RegisterChannel(pitchStabilizationSwitch);
+  Switch* autopilotSwitch = new Switch(kAutopilotSwitchId);
+  transmitter->RegisterChannel(autopilotSwitch);
   Knob* rollStabilizationKnob = new Knob(kRollStabilizationKnobId);
   transmitter->RegisterChannel(rollStabilizationKnob);
   Knob* pitchStabilizationKnob = new Knob(kPitchStabilizationKnobId);
@@ -50,13 +49,11 @@ void setup() {
     new Ruddervator(kRightRuddervatorPin), new Ruddervator(kLeftRuddervatorPin));
   TinyGPSPlus* gps = new TinyGPSPlus();
   Location* planeLocation = new Location(0, 0);
-  Pid* rollPidController = new Pid(1, 0, 0.1);
-  Pid* pitchPidController = new Pid(0, 0, 0);
+  Pid* rollPidController = new Pid(0.7, 0, 0.05);
+  Pid* pitchPidController = new Pid(1, 0, 0.1);
   Operation* operation = new Operation(transmitter, imu, altimeter, engine, surfaces,
-    engineSwitch, stabilizationSwitch, pitchStabilizationSwitch,
-    rollStabilizationKnob, pitchStabilizationKnob, rollPidController, pitchPidController);
-  Switch* autopilotSwitch = new Switch(kAutopilotSwitchId);
-  transmitter->RegisterChannel(autopilotSwitch);
+    engineSwitch, stabilizationSwitch, rollStabilizationKnob,
+    pitchStabilizationKnob, rollPidController, pitchPidController);
   std::vector<Waypoint> waypoints;
   Mission* mission = new Mission(waypoints);
   Autopilot* autopilot = new Autopilot(transmitter, imu, engine, surfaces,
