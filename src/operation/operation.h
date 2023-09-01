@@ -24,7 +24,6 @@ private:
   Surfaces* surfaces_;
   Switch* engine_switch_;
   Switch* stabilization_switch_;
-  Switch* pitch_stabilization_switch_;
   Knob* roll_stabilization_knob_;
   Knob* pitch_stabilization_knob_;
   Pid* roll_pid_controller_;
@@ -33,14 +32,14 @@ private:
   void ApplySurfaceMovement();
   float CalculateRollAngle(int aileronStickValue);
   float CalculatePitchAngle(int elevatorStickValue);
-  //void AdjustPlaneOrientation(float desiredRollAngle, float desiredPitchAngle);
+  void AdjustPlaneOrientation(float desiredRollAngle, float desiredPitchAngle);
   void AdjustPlaneRollAngle(float desiredRollAngle);
-  //void AdjustPlanePitchAngle(float desiredPitchAngle);
+  void AdjustPlanePitchAngle(float desiredPitchAngle);
 public:
   Operation(Transmitter* transmitter, Imu* imu, Altimeter* altimeter, Engine* engine,
     Surfaces* surfaces, Switch* engineSwitch, Switch* stabilizationSwitch,
-    Switch* pitchStabilizationSwitch, Knob* rollStabilizationKnob,
-    Knob* pitchStabilizationKnob, Pid* rollPidController, Pid* pitchPidController);
+    Knob* rollStabilizationKnob, Knob* pitchStabilizationKnob,
+    Pid* rollPidController, Pid* pitchPidController);
   void Recalculate();
 };
 
