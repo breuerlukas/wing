@@ -9,33 +9,33 @@ Altimeter::Altimeter() : Altimeter(1013.25) {
 }
 
 void Altimeter::Initialize() {
-  bmp_.reset();
-  bmp_.begin();
+  bmp_.begin(BMP280_ADDRESS_ALT, BMP280_CHIPID);
+  Configure();
+}
+
+void Altimeter::Configure() {
+  bmp_.setSampling(Adafruit_BMP280::MODE_NORMAL, Adafruit_BMP280::SAMPLING_X2,
+    Adafruit_BMP280::SAMPLING_X16, Adafruit_BMP280::FILTER_X16,
+    Adafruit_BMP280::STANDBY_MS_1);
+}
+
+void Altimeter::Calibrate() {
+  float accumulated = 0;
+  for (int i = 0; i < 50; i++) {
+    Tick();
+    accumulated += current_altitude_;
+  }
+  home_altitude_ = accumulated / 50;
 }
 
 void Altimeter::Tick() {
-  uint32_t pressure = bmp_.getPressure();
-  float altitude = bmp_.calAltitude(local_qnh_, pressure);
+  float altitude = bmp_.readAltitude(local_qnh_);
   current_altitude_ = SmoothMeasurement(altitude);
 }
 
 float Altimeter::SmoothMeasurement(float altitude) {
-  if (previous_altitudes_.size() < MOVING_AVERAGE_REVIEW) {
-    previous_altitudes_.push_back(altitude);
-    return altitude;
-  }
-  if (previous_altitudes_.size() == MOVING_AVERAGE_REVIEW) {
-    for (int i = 0; i < previous_altitudes_.size(); i++) {
-      previous_moving_average += previous_altitudes_[i];
-    }
-    previous_moving_average /= previous_altitudes_.size();
-    previous_altitudes_.clear();
-    return previous_moving_average;
-  }
-  float multiplier = (float) 2 / (MOVING_AVERAGE_REVIEW + 1);
-  float currentMovingAverage = (altitude - previous_moving_average) * multiplier +
-    previous_moving_average;
   long time = millis();
+  float currentMovingAverage = altitude;
   current_vertical_speed = (currentMovingAverage - previous_moving_average) /
     ((time - previous_measurement_time) / (float) 1000);
   previous_moving_average = currentMovingAverage;
@@ -45,6 +45,10 @@ float Altimeter::SmoothMeasurement(float altitude) {
 
 float Altimeter::Altitude() {
   return current_altitude_;
+}
+
+float Altimeter::RelativeAltitude() {
+  return current_altitude_ - home_altitude_;
 }
 
 float Altimeter::VerticalSpeed() {
