@@ -3,7 +3,8 @@
 Operation::Operation(Transmitter* transmitter, Imu* imu, Altimeter* altimeter,
   Engine* engine, Surfaces* surfaces, DualSwitch* engineSwitch,
   TripleSwitch* stabilizationSwitch, Knob* rollStabilizationKnob,
-  Knob* pitchStabilizationKnob, Pid* rollPidController, Pid* pitchPidController)
+  Knob* pitchStabilizationKnob, Pid* rollPidController, Pid* pitchPidController,
+  Pid* verticalSpeedPidController)
   : transmitter_(transmitter),
     imu_(imu),
     altimeter_(altimeter),
@@ -13,6 +14,7 @@ Operation::Operation(Transmitter* transmitter, Imu* imu, Altimeter* altimeter,
     stabilization_switch_(stabilizationSwitch),
     roll_stabilization_knob_(rollStabilizationKnob),
     pitch_stabilization_knob_(pitchStabilizationKnob),
+    vertical_speed_pid_controller_(verticalSpeedPidController),
     roll_pid_controller_(rollPidController),
     pitch_pid_controller_(pitchPidController) {
 
@@ -45,6 +47,15 @@ void Operation::ApplySurfaceMovement() {
   if (stabilization_switch_->State() == kDown) {
     AdjustPlaneOrientation(CalculateRollAngle(aileronStickValue),
       CalculatePitchAngle(elevatorStickValue));
+    return;
+  }
+  if (stabilization_switch_->State() == kMiddle) {
+    float desiredVerticalSpeed = ((float) 1 / 500) *
+      (elevatorStickValue - 1500) * MAX_VERTICAL_SEED;
+    float currentVerticalSpeed = altimeter_->VerticalSpeed();
+    float error = desiredVerticalSpeed - currentVerticalSpeed;
+    float pitchAngle = vertical_speed_pid_controller_->Calculate(currentVerticalSpeed, error);
+    AdjustPlaneOrientation(CalculateRollAngle(aileronStickValue), pitchAngle);
     return;
   }
 }
