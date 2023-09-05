@@ -52,9 +52,10 @@ void setup() {
   Location* planeLocation = new Location(0, 0);
   Pid* rollPidController = new Pid(0.7, 0, 0.05);
   Pid* pitchPidController = new Pid(1, 0, 0.1);
+  Pid* verticalSpeedPidController = new Pid(1, 0, 0.1);
   Operation* operation = new Operation(transmitter, imu, altimeter, engine, surfaces,
     engineSwitch, stabilizationSwitch, rollStabilizationKnob,
-    pitchStabilizationKnob, rollPidController, pitchPidController);
+    pitchStabilizationKnob, rollPidController, pitchPidController, verticalSpeedPidController);
   std::vector<Waypoint> waypoints;
   Mission* mission = new Mission(waypoints);
   Autopilot* autopilot = new Autopilot(transmitter, imu, engine, surfaces,
