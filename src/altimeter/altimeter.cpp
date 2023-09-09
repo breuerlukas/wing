@@ -30,17 +30,16 @@ void Altimeter::Calibrate() {
 
 void Altimeter::Tick() {
   float altitude = bmp_.readAltitude(local_qnh_);
-  current_altitude_ = SmoothMeasurement(altitude);
+  CalculateVerticalSpeed(altitude);
 }
 
-float Altimeter::SmoothMeasurement(float altitude) {
+float Altimeter::CalculateVerticalSpeed(float altitude) {
   long time = millis();
-  float currentMovingAverage = altitude;
-  current_vertical_speed = (currentMovingAverage - previous_moving_average) /
-    ((time - previous_measurement_time) / (float) 1000);
-  previous_moving_average = currentMovingAverage;
+  current_vertical_speed = (altitude - previous_moving_average) /
+    (float) ((time - previous_measurement_time) / (float) 1000);
+  previous_moving_average = altitude;
   previous_measurement_time = time;
-  return currentMovingAverage;
+  return current_vertical_speed;
 }
 
 float Altimeter::Altitude() {

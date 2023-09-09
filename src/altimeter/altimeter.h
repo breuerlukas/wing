@@ -15,7 +15,7 @@ private:
   float previous_moving_average;
   long previous_measurement_time;
   void Configure();
-  float SmoothMeasurement(float altitude);
+  float CalculateVerticalSpeed(float altitude);
 public:
   Altimeter(float localQnh);
   Altimeter();
