@@ -2,14 +2,14 @@
 #define WING_TRANSMITTER_H
 
 #include <cstddef>
-#include <IBusBM.h>
 #include "ArduinoSTL.h"
+#include "crsf.h"
 #include "channel/channel.h"
 #include "channel/stick.h"
 
 class Transmitter {
 private:
-  IBusBM bus_;
+  CRSF crsf_ = CRSF(Serial);
   Stick* throttle_stick_;
   Stick* elevator_stick_;
   Stick* aileron_stick_;

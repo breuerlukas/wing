@@ -17,13 +17,13 @@ void Transmitter::RegisterChannel(Channel* channel) {
 }
 
 void Transmitter::Initialize() {
-  bus_.begin(Serial, IBUSBM_NOTIMER);
+  crsf_.Begin(115200);
 }
 
 void Transmitter::Update() {
-  bus_.loop();
+  crsf_.Update();
   for (int i = 0; i < channels_.size(); i++) {
-    channels_[i]->Update(bus_.readChannel(channels_[i]->Id()));
+    channels_[i]->Update(crsf_.FindChannelValue(channels_[i]->Id() + 1));
   }
 }
 
