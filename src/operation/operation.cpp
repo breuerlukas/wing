@@ -2,9 +2,7 @@
 
 Operation::Operation(Transmitter* transmitter, Imu* imu, Altimeter* altimeter,
   Engine* engine, Surfaces* surfaces, DualSwitch* engineSwitch,
-  TripleSwitch* stabilizationSwitch, Knob* rollStabilizationKnob,
-  Knob* pitchStabilizationKnob, Pid* rollPidController, Pid* pitchPidController,
-  Pid* verticalSpeedPidController)
+  TripleSwitch* stabilizationSwitch, Pid* rollPidController, Pid* pitchPidController)
   : transmitter_(transmitter),
     imu_(imu),
     altimeter_(altimeter),
@@ -12,9 +10,6 @@ Operation::Operation(Transmitter* transmitter, Imu* imu, Altimeter* altimeter,
     surfaces_(surfaces),
     engine_switch_(engineSwitch),
     stabilization_switch_(stabilizationSwitch),
-    roll_stabilization_knob_(rollStabilizationKnob),
-    pitch_stabilization_knob_(pitchStabilizationKnob),
-    vertical_speed_pid_controller_(verticalSpeedPidController),
     roll_pid_controller_(rollPidController),
     pitch_pid_controller_(pitchPidController) {
 
@@ -44,18 +39,15 @@ void Operation::ApplySurfaceMovement() {
     surfaces_->Flush();
     return;
   }
+  if (stabilization_switch_->State() == kMiddle) {
+    AdjustPlaneRollAngle(CalculateRollAngle(aileronStickValue));
+    surfaces_->PerformSyncRuddervatorMovement(-((float) 90 / 500) * (elevatorStickValue - 1500) * 0.5);
+    surfaces_->Flush();
+    return;
+  }
   if (stabilization_switch_->State() == kDown) {
     AdjustPlaneOrientation(CalculateRollAngle(aileronStickValue),
       CalculatePitchAngle(elevatorStickValue));
-    return;
-  }
-  if (stabilization_switch_->State() == kMiddle) {
-    float desiredVerticalSpeed = ((float) 1 / 500) *
-      (elevatorStickValue - 1500) * MAX_VERTICAL_SEED;
-    float currentVerticalSpeed = altimeter_->VerticalSpeed();
-    float error = desiredVerticalSpeed - currentVerticalSpeed;
-    float pitchAngle = vertical_speed_pid_controller_->Calculate(currentVerticalSpeed, error);
-    AdjustPlaneOrientation(CalculateRollAngle(aileronStickValue), pitchAngle);
     return;
   }
 }
@@ -88,9 +80,8 @@ void Operation::AdjustPlaneRollAngle(float desiredRollAngle) {
 }
 
 void Operation::AdjustPlanePitchAngle(float desiredPitchAngle) {
-  float pitchStabilizationFactor = (pitch_stabilization_knob_->Value() - 1000) / (float) 1000;
-  float currentPitchAngle = -imu_->pitch() - 5;
+  float currentPitchAngle = imu_->pitch() + 5;
   float error = desiredPitchAngle - currentPitchAngle;
   surfaces_->PerformSyncRuddervatorMovement(-(int) (pitch_pid_controller_->
-      Calculate(currentPitchAngle, error) * 2 * pitchStabilizationFactor));
+      Calculate(currentPitchAngle, error)));
 }

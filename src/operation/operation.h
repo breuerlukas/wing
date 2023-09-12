@@ -25,11 +25,10 @@ private:
   Surfaces* surfaces_;
   DualSwitch* engine_switch_;
   TripleSwitch* stabilization_switch_;
-  Knob* roll_stabilization_knob_;
-  Knob* pitch_stabilization_knob_;
   Pid* roll_pid_controller_;
   Pid* pitch_pid_controller_;
-  Pid* vertical_speed_pid_controller_;
+  float desired_altitude_ = 0;
+  long last_altitude_reset = 0;
   void ApplyEngineThrust();
   void ApplySurfaceMovement();
   float CalculateRollAngle(int aileronStickValue);
@@ -40,8 +39,7 @@ private:
 public:
   Operation(Transmitter* transmitter, Imu* imu, Altimeter* altimeter, Engine* engine,
     Surfaces* surfaces, DualSwitch* engineSwitch, TripleSwitch* stabilizationSwitch,
-    Knob* rollStabilizationKnob, Knob* pitchStabilizationKnob, Pid* rollPidController,
-    Pid* pitchPidController, Pid* verticalSpeedPidController);
+    Pid* rollPidController, Pid* pitchPidController);
   void Recalculate();
 };
 
