@@ -19,7 +19,7 @@ private:
   Engine* engine_;
   Surfaces* surfaces_;
   TinyGPSPlus* gps_;
-  SoftwareSerial software_serial_ = SoftwareSerial(4, 3);
+  //SoftwareSerial software_serial_ = SoftwareSerial(4, 3);
   Location* plane_location_;
   Operation* operation_;
   Autopilot* autopilot_;
