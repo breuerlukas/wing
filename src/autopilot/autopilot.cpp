@@ -1,15 +1,13 @@
 #include "autopilot.h"
 
 Autopilot::Autopilot(Transmitter* transmitter, Imu* imu, Engine* engine,
-  Surfaces* surfaces, DualSwitch* autopilotSwitch, Knob* rollStabilizationKnob,
-  Knob* pitchStabilizationKnob, TinyGPSPlus* gps, Location* planeLocation, Mission* mission)
+  Surfaces* surfaces, DualSwitch* autopilotSwitch, TinyGPSPlus* gps,
+  Location* planeLocation, Mission* mission)
   : transmitter_(transmitter),
     imu_(imu),
     engine_(engine),
     surfaces_(surfaces),
     autopilot_switch_(autopilotSwitch),
-    roll_stabilization_knob_(rollStabilizationKnob),
-    pitch_stabilization_knob_(pitchStabilizationKnob),
     gps_(gps),
     plane_location_(planeLocation),
     mission_(mission) {
@@ -37,6 +35,31 @@ void Autopilot::Tick() {
   double rollAngleDifference = -leftTurnAngle < rightTurnAngle ? leftTurnAngle : rightTurnAngle;
   //TODO: CALCULATE PITCH ANGLE (PROBABLY VIA BAROMETER)
   AdjustPlaneOrientation(CalculateRollAngle(rollAngleDifference), 0);
+  /*if (stabilization_switch_->State() == kDown) {
+  long time = millis();
+  float desiredVerticalSpeed = ((float) 1 / 500) *
+    (elevatorStickValue - 1500) * (float) ALTITUDE_CHANGE_RATE;
+  float currentAltitude = altimeter_->RelativeAltitude();
+  if ((fabs(desiredVerticalSpeed) >= 0.95 * (float) ALTITUDE_CHANGE_RATE) &&
+      ((desired_altitude_ > currentAltitude && desiredVerticalSpeed < 0) ||
+      (desired_altitude_ < currentAltitude && desiredVerticalSpeed > 0))
+    ) {
+    desired_altitude_ = currentAltitude;
+    last_altitude_reset = time;
+  }
+  if (last_altitude_reset + 500 < time) {
+    desired_altitude_ += desiredVerticalSpeed;
+  }
+  float error = (desired_altitude_ - currentAltitude) * 5;
+  float pitchAngle;
+  if (fabs(error) > 10) {
+    pitchAngle = (error < 0 ? -MIN_PITCH_ANGLE : MAX_PITCH_ANGLE) * ((float) 2 / 3);
+  } else {
+    pitchAngle = (error < 0 ? -MIN_PITCH_ANGLE : MAX_PITCH_ANGLE) * ((float) 2 / 3) * pow(fabs(error / 10), 1.2);
+  }
+  AdjustPlaneOrientation(CalculateRollAngle(aileronStickValue), pitchAngle);
+  return;
+}*/
 }
 
 void Autopilot::UpdateAutopilotState() {
@@ -54,8 +77,6 @@ float Autopilot::CalculatePitchAngle(double pitchAngleDifference) {
 }
 
 void Autopilot::AdjustPlaneOrientation(float desiredRollAngle, float desiredPitchAngle) {
-  float rollStabilizationFactor = (roll_stabilization_knob_->Value() - 1000) / (float) 1000;
-  float pitchStabilizationFactor = (pitch_stabilization_knob_->Value() - 1000) / (float) 1000;
   float currentRollAngle = imu_->roll();
   float currentPitchAngle = imu_->pitch();
   float rollDifference = desiredRollAngle - currentRollAngle;

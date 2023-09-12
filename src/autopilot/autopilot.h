@@ -26,8 +26,6 @@ private:
   Engine* engine_;
   Surfaces* surfaces_;
   DualSwitch* autopilot_switch_;
-  Knob* roll_stabilization_knob_;
-  Knob* pitch_stabilization_knob_;
   TinyGPSPlus* gps_;
   Location* plane_location_;
   Mission* mission_;
@@ -38,8 +36,8 @@ private:
   void AdjustPlaneOrientation(float desiredRollAngle, float desiredPitchAngle);
 public:
   Autopilot(Transmitter* transmitter, Imu* imu, Engine* engine,
-  Surfaces* surfaces, DualSwitch* autopilotSwitch, Knob* rollStabilizationKnob,
-  Knob* pitchStabilizationKnob, TinyGPSPlus* gps, Location* planeLocation, Mission* mission);
+  Surfaces* surfaces, DualSwitch* autopilotSwitch, TinyGPSPlus* gps,
+  Location* planeLocation, Mission* mission);
   void Initialize();
   void Tick();
   AutopilotState State();
