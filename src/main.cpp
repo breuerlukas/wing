@@ -17,6 +17,7 @@ const int kRudderStickId = 3;
 const int kEngineSwitchId = 7;
 const int kStabilizationSwitchId = 5;
 const int kAutopilotSwitchId = 6;
+const int kAutopilotModeSwitchId = 6;
 const int kRightRuddervatorPin = 2;
 const int kLeftRuddervatorPin = 3;
 const int kEnginePin = 4;
@@ -35,6 +36,8 @@ void setup() {
   transmitter->RegisterChannel(stabilizationSwitch);
   DualSwitch* autopilotSwitch = new DualSwitch(kAutopilotSwitchId);
   transmitter->RegisterChannel(autopilotSwitch);
+  TripleSwitch* autopilotModeSwitch = new TripleSwitch(kAutopilotModeSwitchId);
+  transmitter->RegisterChannel(autopilotModeSwitch);
   Imu* imu = new Imu();
   Altimeter* altimeter = new Altimeter(1013);
   Engine* engine = new Engine(kEnginePin);
@@ -44,12 +47,13 @@ void setup() {
   Location* planeLocation = new Location(0, 0);
   Pid* rollPidController = new Pid(0.7, 0, 0.05);
   Pid* pitchPidController = new Pid(1, 0, 0.1);
-  Operation* operation = new Operation(transmitter, imu, altimeter, engine, surfaces,
+  Operation* operation = new Operation(transmitter, imu, engine, surfaces,
     engineSwitch, stabilizationSwitch, rollPidController, pitchPidController);
   std::vector<Waypoint> waypoints;
   Mission* mission = new Mission(waypoints);
-  Autopilot* autopilot = new Autopilot(transmitter, imu, engine, surfaces,
-    autopilotSwitch, gps, planeLocation, mission);
+  Autopilot* autopilot = new Autopilot(transmitter, imu, altimeter, engine, surfaces,
+    engineSwitch, autopilotSwitch, autopilotModeSwitch, rollPidController,
+    pitchPidController, gps, planeLocation, mission);
   plane = new Plane(transmitter, imu, altimeter, engine, surfaces, gps,
     planeLocation, operation, autopilot);
   plane->Initialize();
