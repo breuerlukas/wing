@@ -1,11 +1,10 @@
 #include "operation.h"
 
-Operation::Operation(Transmitter* transmitter, Imu* imu, Altimeter* altimeter,
-  Engine* engine, Surfaces* surfaces, DualSwitch* engineSwitch,
-  TripleSwitch* stabilizationSwitch, Pid* rollPidController, Pid* pitchPidController)
+Operation::Operation(Transmitter* transmitter, Imu* imu, Engine* engine,
+  Surfaces* surfaces, DualSwitch* engineSwitch, TripleSwitch* stabilizationSwitch,
+  Pid* rollPidController, Pid* pitchPidController)
   : transmitter_(transmitter),
     imu_(imu),
-    altimeter_(altimeter),
     engine_(engine),
     surfaces_(surfaces),
     engine_switch_(engineSwitch),
@@ -83,5 +82,5 @@ void Operation::AdjustPlanePitchAngle(float desiredPitchAngle) {
   float currentPitchAngle = imu_->pitch() + 5;
   float error = desiredPitchAngle - currentPitchAngle;
   surfaces_->PerformSyncRuddervatorMovement(-(int) (pitch_pid_controller_->
-      Calculate(currentPitchAngle, error)));
+    Calculate(currentPitchAngle, error)));
 }
