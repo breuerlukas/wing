@@ -3,7 +3,7 @@
 Autopilot::Autopilot(Transmitter* transmitter, Imu* imu, Altimeter* altimeter,
   Engine* engine, Surfaces* surfaces, DualSwitch* engineSwitch,
   DualSwitch* autopilotSwitch, TripleSwitch* autopilotModeSwitch,
-  Pid* rollPidController, Pid* pitchPidController, TinyGPSPlus* gps,
+  Pid* rollPidController, Pid* pitchPidController,
   Location* planeLocation, Mission* mission)
   : transmitter_(transmitter),
     imu_(imu),
@@ -15,7 +15,6 @@ Autopilot::Autopilot(Transmitter* transmitter, Imu* imu, Altimeter* altimeter,
     autopilot_mode_switch_(autopilotModeSwitch),
     roll_pid_controller_(rollPidController),
     pitch_pid_controller_(pitchPidController),
-    gps_(gps),
     plane_location_(planeLocation),
     mission_(mission) {
 
@@ -70,7 +69,7 @@ void Autopilot::ApplyEngineThrust() {
 }
 
 float Autopilot::CalculateRollAngle(Direction direction) {
-  double currentCourse = gps_->course.deg();
+  double currentCourse = 0;//gps_->course.deg();
   double leftTurnAngle = -fmod((currentCourse - direction.Bearing()) + 360, 360);
   double rightTurnAngle = fmod((direction.Bearing() - currentCourse) + 360, 360);
   double rollAngleDifference = -leftTurnAngle < rightTurnAngle ? leftTurnAngle : rightTurnAngle;

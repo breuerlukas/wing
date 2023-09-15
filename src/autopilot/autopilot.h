@@ -33,7 +33,6 @@ private:
   TripleSwitch* autopilot_mode_switch_;
   Pid* roll_pid_controller_;
   Pid* pitch_pid_controller_;
-  TinyGPSPlus* gps_;
   Location* plane_location_;
   Mission* mission_;
   AutopilotState state_ = kDisengaged;
@@ -50,7 +49,7 @@ public:
   Autopilot(Transmitter* transmitter, Imu* imu, Altimeter* altimeter, Engine* engine,
   Surfaces* surfaces, DualSwitch* engineSwitch, DualSwitch* autopilotSwitch,
   TripleSwitch* autopilotModeSwitch, Pid* rollPidController, Pid* pitchPidController,
-  TinyGPSPlus* gps, Location* planeLocation, Mission* mission);
+  Location* planeLocation, Mission* mission);
   void Initialize();
   void Tick();
   AutopilotState State();
