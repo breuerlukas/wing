@@ -10,6 +10,7 @@
 #include "surface/surfaces.h"
 #include "operation/operation.h"
 #include "autopilot/autopilot.h"
+#include "led/led.h"
 
 class Plane {
 private:
@@ -18,15 +19,15 @@ private:
   Altimeter* altimeter_;
   Engine* engine_;
   Surfaces* surfaces_;
-  TinyGPSPlus* gps_;
-  //SoftwareSerial software_serial_ = SoftwareSerial(4, 3);
   Location* plane_location_;
   Operation* operation_;
   Autopilot* autopilot_;
+  Led* led_;
+  void FeedGps();
 public:
   Plane(Transmitter* transmitter, Imu* imu, Altimeter* altimeter, Engine* engine,
-    Surfaces* surfaces, TinyGPSPlus* gps, Location* planeLocation,
-    Operation* operation, Autopilot* autopilot);
+    Surfaces* surfaces, Location* planeLocation,
+    Operation* operation, Autopilot* autopilot, Led* led);
   void Initialize();
   void Tick();
 };
