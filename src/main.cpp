@@ -8,6 +8,7 @@
 #include "engine/engine.h"
 #include "surface/surfaces.h"
 #include "pid/pid.h"
+#include "led/led.h"
 #include "plane.h"
 
 const int kThrottleStickId = 2;
@@ -27,6 +28,7 @@ Plane* plane;
 long previousTime;
 
 void setup() {
+  Serial.begin(115200);
   Transmitter* transmitter = new Transmitter(new Stick(kThrottleStickId),
     new Stick(kElevatorStickId), new Stick(kAileronStickId),
     new Stick(kRudderStickId));
@@ -43,7 +45,6 @@ void setup() {
   Engine* engine = new Engine(kEnginePin);
   Surfaces* surfaces = new Surfaces(new Aileron(kAileronPin),
     new Ruddervator(kRightRuddervatorPin), new Ruddervator(kLeftRuddervatorPin));
-  TinyGPSPlus* gps = new TinyGPSPlus();
   Location* planeLocation = new Location(0, 0);
   Pid* rollPidController = new Pid(0.7, 0, 0.05);
   Pid* pitchPidController = new Pid(1, 0, 0.1);
@@ -53,9 +54,10 @@ void setup() {
   Mission* mission = new Mission(waypoints);
   Autopilot* autopilot = new Autopilot(transmitter, imu, altimeter, engine, surfaces,
     engineSwitch, autopilotSwitch, autopilotModeSwitch, rollPidController,
-    pitchPidController, gps, planeLocation, mission);
-  plane = new Plane(transmitter, imu, altimeter, engine, surfaces, gps,
-    planeLocation, operation, autopilot);
+    pitchPidController, planeLocation, mission);
+  Led* led = new Led(13u);
+  plane = new Plane(transmitter, imu, altimeter, engine, surfaces,
+    planeLocation, operation, autopilot, led);
   plane->Initialize();
 }
 
