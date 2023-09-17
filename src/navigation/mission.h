@@ -11,14 +11,14 @@ enum MissionStatus {
 
 class Mission {
 private:
-  std::vector<Waypoint> waypoints_;
+  Waypoint** waypoints_;
   int waypoint_index_ = 0;
   MissionStatus mission_status_ = kInactive;
 public:
-  Mission(std::vector<Waypoint> waypoints);
+  Mission(Waypoint** waypoints);
   void Begin();
   void Next();
-  Waypoint Current();
+  Waypoint* Current();
   void Abort();
   MissionStatus Status();
 };

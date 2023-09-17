@@ -1,6 +1,6 @@
 #include "mission.h"
 
-Mission::Mission(std::vector<Waypoint> waypoints) : waypoints_(waypoints) {
+Mission::Mission(Waypoint** waypoints) : waypoints_(waypoints) {
 
 }
 
@@ -9,14 +9,14 @@ void Mission::Begin() {
 }
 
 void Mission::Next() {
-  if (waypoint_index_ + 1 == waypoints_.size()) {
+  if (waypoint_index_ + 1 == sizeof(waypoints_) / sizeof(waypoints_[0])) {
     Abort();
     return;
   }
   waypoint_index_++;
 }
 
-Waypoint Mission::Current() {
+Waypoint* Mission::Current() {
   return waypoints_[waypoint_index_];
 }
 
