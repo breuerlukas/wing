@@ -5,20 +5,32 @@ TripleSwitch::TripleSwitch(int pin) : Channel(pin) {
 }
 
 void TripleSwitch::Update(long value)  {
-  if (value == 0) {
+  if (value < 1000 || value > 2000) {
     return;
   }
   this->value = value;
-  if (value < 1200) {
-    state_ = kUp;
+  TripleSwitchState newState = FindState(value);
+  if (is_state_changing_) {
+    state_ = newState;
+    is_state_changing_ = false;
     return;
+  }
+  if (state_ != newState) {
+    is_state_changing_ = true;
+    return;
+  }
+  state_ = newState;
+}
+
+TripleSwitchState TripleSwitch::FindState(long value) {
+  if (value < 1200) {
+    return kUp;
   }
   if (value >= 1200 && value <= 1800) {
-    state_ = kMiddle;
-    return;
+    return kMiddle;
   }
   if (value > 1800) {
-    state_ = kDown;
+    return kDown;
   }
 }
 

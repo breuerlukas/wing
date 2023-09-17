@@ -12,6 +12,8 @@ enum TripleSwitchState {
 class TripleSwitch : public Channel {
 private:
   TripleSwitchState state_ = kUp;
+  boolean is_state_changing_ = false;
+  TripleSwitchState FindState(long value);
 public:
   TripleSwitch(int pin);
   void Update(long value) override;

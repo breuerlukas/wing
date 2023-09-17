@@ -11,6 +11,8 @@ enum DualSwitchState {
 class DualSwitch : public Channel {
 private:
   DualSwitchState state_ = kOff;
+  boolean is_state_changing_ = false;
+  DualSwitchState FindState(long value);
 public:
   DualSwitch(int pin);
   void Update(long value) override;
