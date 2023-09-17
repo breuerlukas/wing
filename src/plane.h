@@ -2,7 +2,7 @@
 #define WING_PLANE_H
 
 #include <TinyGPSPlus.h>
-#include <SoftwareSerial.h>
+#include <AltSoftSerial.h>
 #include "transmitter/transmitter.h"
 #include "imu/imu.h"
 #include "altimeter/altimeter.h"
@@ -23,6 +23,7 @@ private:
   Operation* operation_;
   Autopilot* autopilot_;
   Led* led_;
+  double plane_course_;
   void FeedGps();
 public:
   Plane(Transmitter* transmitter, Imu* imu, Altimeter* altimeter, Engine* engine,

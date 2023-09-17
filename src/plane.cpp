@@ -16,23 +16,24 @@ Plane::Plane(Transmitter* transmitter, Imu* imu, Altimeter* altimeter,
 }
 
 TinyGPSPlus gps_;
-SoftwareSerial software_serial_ = SoftwareSerial(2, 3);
+AltSoftSerial software_serial_;
 
 void Plane::Initialize() {
   engine_->Initialize();
+  engine_->ApplyThrust(1000);
   surfaces_->Initialize();
   delay(2000);
   led_->ChangeState(kEnabled);
   imu_->calibrate();
   altimeter_->Initialize();
   altimeter_->Calibrate();
-  transmitter_->Initialize();
   software_serial_.begin(38400);
-  while (gps_.satellites.value() < 4) {
+  while (gps_.satellites.value() < 1) {
     FeedGps();
   }
   led_->ChangeState(kDisabled);
-  //autopilot_->Initialize();
+  transmitter_->Initialize();
+  autopilot_->Initialize();
 }
 
 void Plane::Tick() {
@@ -40,14 +41,15 @@ void Plane::Tick() {
   imu_->run();
   altimeter_->Tick();
   FeedGps();
-  operation_->Recalculate();
   if (gps_.location.isUpdated()) {
+    plane_course_ = gps_.courseTo(plane_location_->Latitude(),
+      plane_location_->Longitude(), gps_.location.lat(), gps_.location.lng());
     plane_location_->Update(gps_.location.lat(), gps_.location.lng());
   }
-  /*autopilot_->Tick();
+  autopilot_->Tick(plane_course_);
   if (autopilot_->State() == kDisengaged) {
     operation_->Recalculate();
-  }*/
+  }
 }
 
 void Plane::FeedGps() {
