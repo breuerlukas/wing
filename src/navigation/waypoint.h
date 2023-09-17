@@ -3,22 +3,14 @@
 
 #include "location.h"
 
-enum WaypointTask {
-  kDeparture,
-  kInFlight,
-  kArrival
-};
-
 class Waypoint {
 private:
   Location location_;
   double altitude_;
-  WaypointTask task_;
 public:
-  Waypoint(Location location, double altitude, WaypointTask task);
+  Waypoint(Location location, double altitude);
   Location Location();
   double Altitude();
-  WaypointTask Task();
 };
 
 

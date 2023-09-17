@@ -1,9 +1,8 @@
 #include "waypoint.h"
 
-Waypoint::Waypoint(class Location location, double altitude, WaypointTask task)
+Waypoint::Waypoint(class Location location, double altitude)
   : location_(location),
-    altitude_(altitude),
-    task_(task) {
+    altitude_(altitude) {
 
 }
 
@@ -13,8 +12,4 @@ Location Waypoint::Location() {
 
 double Waypoint::Altitude() {
   return altitude_;
-}
-
-WaypointTask Waypoint::Task() {
-  return task_;
 }
