@@ -1,7 +1,7 @@
 #ifndef WING_AILERON_H
 #define WING_AILERON_H
 
-#include "Servo.h"
+#include "servo/servo.h"
 
 class Aileron {
 private:

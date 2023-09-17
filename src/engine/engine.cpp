@@ -5,7 +5,7 @@ Engine::Engine(int pin) : esc_pin_(pin) {
 }
 
 void Engine::Initialize() {
-  esc_.attach(esc_pin_, 1000, 2000);
+  esc_.attach(esc_pin_);
 }
 
 void Engine::ApplyThrust(int thrust) {

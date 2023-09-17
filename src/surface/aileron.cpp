@@ -9,5 +9,5 @@ void Aileron::Initialize() {
 }
 
 void Aileron::Move(int value) {
-  servo_.write(value);
+  servo_.writeAngle(value);
 }

@@ -1,7 +1,7 @@
 #ifndef WING_ENGINE_H
 #define WING_ENGINE_H
 
-#include "Servo.h"
+#include "servo/servo.h"
 
 class Engine {
 private:

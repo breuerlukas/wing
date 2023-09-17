@@ -1,7 +1,7 @@
 #ifndef WING_RUDDERVATOR_H
 #define WING_RUDDERVATOR_H
 
-#include "Servo.h"
+#include "servo/servo.h"
 
 class Ruddervator {
 private:
