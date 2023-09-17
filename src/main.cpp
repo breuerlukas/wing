@@ -18,17 +18,24 @@ const int kRudderStickId = 3;
 const int kEngineSwitchId = 7;
 const int kStabilizationSwitchId = 5;
 const int kAutopilotSwitchId = 6;
-const int kAutopilotModeSwitchId = 6;
-const int kRightRuddervatorPin = 2;
-const int kLeftRuddervatorPin = 3;
+const int kAutopilotModeSwitchId = 4;
 const int kEnginePin = 4;
 const int kAileronPin = 5;
+const int kRightRuddervatorPin = 6;
+const int kLeftRuddervatorPin = 7;
 
 Plane* plane;
 long previousTime;
 
+Mission* createMission() {
+  Waypoint* waypoints[3];
+  waypoints[0] = new Waypoint(Location(50.7574635010, 7.1139879854), 20.0);
+  waypoints[1] = new Waypoint(Location(50.7578652264, 7.1088635050), 20.0);
+  waypoints[2] = new Waypoint(Location(50.7574635010, 7.1139879854), 20.0);
+  return new Mission(waypoints);
+}
+
 void setup() {
-  Serial.begin(115200);
   Transmitter* transmitter = new Transmitter(new Stick(kThrottleStickId),
     new Stick(kElevatorStickId), new Stick(kAileronStickId),
     new Stick(kRudderStickId));
@@ -50,8 +57,7 @@ void setup() {
   Pid* pitchPidController = new Pid(1, 0, 0.1);
   Operation* operation = new Operation(transmitter, imu, engine, surfaces,
     engineSwitch, stabilizationSwitch, rollPidController, pitchPidController);
-  std::vector<Waypoint> waypoints;
-  Mission* mission = new Mission(waypoints);
+  Mission* mission = createMission();
   Autopilot* autopilot = new Autopilot(transmitter, imu, altimeter, engine, surfaces,
     engineSwitch, autopilotSwitch, autopilotModeSwitch, rollPidController,
     pitchPidController, planeLocation, mission);
