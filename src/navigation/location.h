@@ -11,6 +11,7 @@ private:
   double longitude_;
 public:
   Location(double latitude, double longitude);
+  void Update(Location otherLocation);
   void Update(double latitude, double longitude);
   Direction DirectionTo(Location destination);
   double Latitude();

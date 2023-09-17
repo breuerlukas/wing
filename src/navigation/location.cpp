@@ -4,6 +4,10 @@ Location::Location(double latitude, double longitude) : latitude_(latitude), lon
 
 }
 
+void Location::Update(Location otherLocation) {
+  Update(otherLocation.Latitude(), otherLocation.Longitude());
+}
+
 void Location::Update(double latitude, double longitude) {
   latitude_ = latitude;
   longitude_ = longitude;
