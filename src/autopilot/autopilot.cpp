@@ -21,39 +21,50 @@ Autopilot::Autopilot(Transmitter* transmitter, Imu* imu, Altimeter* altimeter,
 }
 
 void Autopilot::Initialize() {
-
+  mission_->Begin();
 }
 
-void Autopilot::Tick() {
-  if (CheckAutopilotInterrupt()) {
+void Autopilot::Tick(double course) {
+  UpdateAutopilotState();
+  if (is_interrupted_ && state_ == kEngaged) {
     state_ = kDisengaged;
     return;
   }
-  UpdateAutopilotState();
+  if (is_interrupted_ && state_ == kDisengaged) {
+    is_interrupted_ = false;
+    return;
+  }
   if (state_ == kDisengaged) {
     return;
   }
+  if (CheckAutopilotInterrupt()) {
+    is_interrupted_ = true;
+    return;
+  }
   ApplyEngineThrust();
-  Direction direction = plane_location_->DirectionTo(mission_->Current().Location());
+  Direction direction = plane_location_->DirectionTo(mission_->Current()->Location());
   if (direction.Distance() <= DISTANCE_TO_WAYPOINT_TO_SKIP) {
     mission_->Next();
-    Tick();
+    Tick(course);
     return;
   }
   if (autopilot_mode_switch_->State() == kUp) {
-    AdjustPlaneOrientation(CalculateRollAngle(direction),
+    AdjustPlaneOrientation(CalculateRollAngle(direction, course),
       CalculatePitchAngleManual());
     return;
   }
-  AdjustPlaneOrientation(CalculateRollAngle(direction),
+  AdjustPlaneOrientation(CalculateRollAngle(direction, course),
     CalculatePitchAngleAltitude());
 }
 
 bool Autopilot::CheckAutopilotInterrupt() {
   int aileronStickValue = transmitter_->AileronStick()->Value();
+  if (autopilot_mode_switch_->State() == kUp) {
+    return (aileronStickValue < 1200 || aileronStickValue > 1800);
+  }
   int elevatorStickValue = transmitter_->ElevatorStick()->Value();
-  return (aileronStickValue < 1400 || aileronStickValue > 1500) ||
-    (elevatorStickValue < 1400 || elevatorStickValue > 1500);
+  return (aileronStickValue < 1200 || aileronStickValue > 1800) ||
+    (elevatorStickValue < 1200 || elevatorStickValue > 1800);
 }
 
 void Autopilot::UpdateAutopilotState() {
@@ -68,11 +79,11 @@ void Autopilot::ApplyEngineThrust() {
   engine_->ApplyThrust(transmitter_->ThrottleStick()->Value());
 }
 
-float Autopilot::CalculateRollAngle(Direction direction) {
-  double currentCourse = 0;//gps_->course.deg();
-  double leftTurnAngle = -fmod((currentCourse - direction.Bearing()) + 360, 360);
-  double rightTurnAngle = fmod((direction.Bearing() - currentCourse) + 360, 360);
+float Autopilot::CalculateRollAngle(Direction direction, double course) {
+  double leftTurnAngle = -fmod((course - direction.Bearing()) + 360, 360);
+  double rightTurnAngle = fmod((direction.Bearing() - course) + 360, 360);
   double rollAngleDifference = -leftTurnAngle < rightTurnAngle ? leftTurnAngle : rightTurnAngle;
+  //Serial.println(rollAngleDifference);
   if (fabs(rollAngleDifference) > 30) {
     return (rollAngleDifference < 0 ? -1 : 1) * (float) AUTOPILOT_MAX_BANK_ANGLE;
   }
@@ -90,7 +101,7 @@ float Autopilot::CalculatePitchAngleManual() {
 
 float Autopilot::CalculatePitchAngleAltitude() {
   float currentAltitude = altimeter_->RelativeAltitude();
-  float error = (mission_->Current().Altitude() - currentAltitude) * 5;
+  float error = (mission_->Current()->Altitude() - currentAltitude) * 5;
   float pitchAngle;
   if (fabs(error) > 10) {
     pitchAngle = (error < 0 ? -MIN_PITCH_ANGLE : MAX_PITCH_ANGLE) * ((float) 2 / 3);

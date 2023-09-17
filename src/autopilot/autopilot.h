@@ -36,10 +36,11 @@ private:
   Location* plane_location_;
   Mission* mission_;
   AutopilotState state_ = kDisengaged;
+  boolean is_interrupted_ = false;
   bool CheckAutopilotInterrupt();
   void UpdateAutopilotState();
   void ApplyEngineThrust();
-  float CalculateRollAngle(Direction direction);
+  float CalculateRollAngle(Direction direction, double course);
   float CalculatePitchAngleManual();
   float CalculatePitchAngleAltitude();
   void AdjustPlaneOrientation(float desiredRollAngle, float desiredPitchAngle);
@@ -51,7 +52,7 @@ public:
   TripleSwitch* autopilotModeSwitch, Pid* rollPidController, Pid* pitchPidController,
   Location* planeLocation, Mission* mission);
   void Initialize();
-  void Tick();
+  void Tick(double course);
   AutopilotState State();
 };
 

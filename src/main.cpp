@@ -27,14 +27,6 @@ const int kLeftRuddervatorPin = 7;
 Plane* plane;
 long previousTime;
 
-Mission* createMission() {
-  Waypoint* waypoints[3];
-  waypoints[0] = new Waypoint(Location(50.7574635010, 7.1139879854), 20.0);
-  waypoints[1] = new Waypoint(Location(50.7578652264, 7.1088635050), 20.0);
-  waypoints[2] = new Waypoint(Location(50.7574635010, 7.1139879854), 20.0);
-  return new Mission(waypoints);
-}
-
 void setup() {
   Transmitter* transmitter = new Transmitter(new Stick(kThrottleStickId),
     new Stick(kElevatorStickId), new Stick(kAileronStickId),
@@ -57,7 +49,11 @@ void setup() {
   Pid* pitchPidController = new Pid(1, 0, 0.1);
   Operation* operation = new Operation(transmitter, imu, engine, surfaces,
     engineSwitch, stabilizationSwitch, rollPidController, pitchPidController);
-  Mission* mission = createMission();
+  Waypoint* waypoints[3];
+  waypoints[0] = new Waypoint(Location(50.7574635010, 7.1139879854), 20.0);
+  waypoints[1] = new Waypoint(Location(50.7578652264, 7.1088635050), 20.0);
+  waypoints[2] = new Waypoint(Location(50.7574635010, 7.1139879854), 20.0);
+  Mission* mission = new Mission(waypoints);
   Autopilot* autopilot = new Autopilot(transmitter, imu, altimeter, engine, surfaces,
     engineSwitch, autopilotSwitch, autopilotModeSwitch, rollPidController,
     pitchPidController, planeLocation, mission);
