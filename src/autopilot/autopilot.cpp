@@ -127,7 +127,7 @@ void Autopilot::AdjustPlaneRollAngle(float desiredRollAngle) {
 }
 
 void Autopilot::AdjustPlanePitchAngle(float desiredPitchAngle) {
-  float currentPitchAngle = imu_->pitch() + 5;
+  float currentPitchAngle = -imu_->pitch() - 5;
   float error = desiredPitchAngle - currentPitchAngle;
   surfaces_->PerformSyncRuddervatorMovement(-(int) (pitch_pid_controller_->
     Calculate(currentPitchAngle, error)));

@@ -58,7 +58,7 @@ float Operation::CalculateRollAngle(int aileronStickValue) {
 
 float Operation::CalculatePitchAngle(int elevatorStickValue) {
   float value = ((float) 1 / 500) * (elevatorStickValue - 1500);
-  if (value < 0) {
+  if (value > 0) {
     return value * MAX_PITCH_ANGLE;
   }
   return value * MIN_PITCH_ANGLE;
@@ -79,7 +79,7 @@ void Operation::AdjustPlaneRollAngle(float desiredRollAngle) {
 }
 
 void Operation::AdjustPlanePitchAngle(float desiredPitchAngle) {
-  float currentPitchAngle = imu_->pitch() + 5;
+  float currentPitchAngle = -imu_->pitch() - 5;
   float error = desiredPitchAngle - currentPitchAngle;
   surfaces_->PerformSyncRuddervatorMovement(-(int) (pitch_pid_controller_->
     Calculate(currentPitchAngle, error)));
