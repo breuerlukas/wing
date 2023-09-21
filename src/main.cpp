@@ -19,13 +19,12 @@ const int kEngineSwitchId = 7;
 const int kStabilizationSwitchId = 5;
 const int kAutopilotSwitchId = 6;
 const int kAutopilotModeSwitchId = 4;
-const int kEnginePin = 4;
-const int kAileronPin = 5;
-const int kRightRuddervatorPin = 6;
-const int kLeftRuddervatorPin = 7;
+const int kEnginePin = 2;
+const int kAileronPin = 3;
+const int kRightRuddervatorPin = 4;
+const int kLeftRuddervatorPin = 5;
 
 Plane* plane;
-long previousTime;
 
 void setup() {
   Transmitter* transmitter = new Transmitter(new Stick(kThrottleStickId),
@@ -57,17 +56,12 @@ void setup() {
   Autopilot* autopilot = new Autopilot(transmitter, imu, altimeter, engine, surfaces,
     engineSwitch, autopilotSwitch, autopilotModeSwitch, rollPidController,
     pitchPidController, planeLocation, mission);
-  Led* led = new Led(13u);
+  Led* led = new Led(13);
   plane = new Plane(transmitter, imu, altimeter, engine, surfaces,
     planeLocation, operation, autopilot, led);
   plane->Initialize();
 }
 
 void loop() {
-  long time = millis();
-  if (previousTime + 10 > time) {
-    return;
-  }
-  previousTime = time;
   plane->Tick();
 }
