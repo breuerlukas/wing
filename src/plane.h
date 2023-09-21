@@ -2,7 +2,6 @@
 #define WING_PLANE_H
 
 #include <TinyGPSPlus.h>
-#include <AltSoftSerial.h>
 #include "transmitter/transmitter.h"
 #include "imu/imu.h"
 #include "altimeter/altimeter.h"
