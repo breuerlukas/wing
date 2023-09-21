@@ -31,6 +31,7 @@ void Altimeter::Calibrate() {
 void Altimeter::Tick() {
   float altitude = bmp_.readAltitude(local_qnh_);
   CalculateVerticalSpeed(altitude);
+  current_altitude_ = altitude;
 }
 
 float Altimeter::CalculateVerticalSpeed(float altitude) {

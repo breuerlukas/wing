@@ -1,13 +1,12 @@
 #ifndef WING_ALTIMETER_H
 #define WING_ALTIMETER_H
 
-#include "ArduinoSTL.h"
 #include "Adafruit_BMP280.h"
 #include "Wire.h"
 
 class Altimeter {
 private:
-  Adafruit_BMP280 bmp_;
+  Adafruit_BMP280 bmp_ = Adafruit_BMP280(&Wire1);
   float local_qnh_;
   float home_altitude_;
   float current_altitude_;
