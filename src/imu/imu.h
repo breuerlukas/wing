@@ -27,7 +27,7 @@
 // ********** IMU CALIBRATION ROUTINE SETTINGS **********
 #define PRE_CALIBRATION_REST_TIMER 1500
 #define MIN_ACCEL_DIFF 200
-#define GYRO_CALIBRATION_READINGS 1000
+#define GYRO_CALIBRATION_READINGS 2000
 #define ACCEL_CALIBRATION_READINGS 5000
 // When enabled, the aircraft does not have to be level during calibration.
 // Instead, the net acceleration vector will be used to determine initial
@@ -63,106 +63,106 @@
 class Imu
 {
 public:
-    Imu();
+  Imu();
 
-    // OPTIONAL: provide a pin number to enable status led indicator
-    Imu(int8_t pin);
+  // OPTIONAL: provide a pin number to enable status led indicator
+  Imu(int8_t pin);
 
-    // Waits for rest then zeros gyro with reference to gravity
-    void calibrate();
+  // Waits for rest then zeros gyro with reference to gravity
+  void calibrate();
 
-    // Immediately begins sampling accelerometer data and prints the average
-    // of these readings to the serial monitor. Mpu6050 should be placed
-    // on a level surface.
-    // NOTE: Serial.begin() must be called before using this function
-    void calibrate_accel();
+  // Immediately begins sampling accelerometer data and prints the average
+  // of these readings to the serial monitor. Mpu6050 should be placed
+  // on a level surface.
+  // NOTE: Serial.begin() must be called before using this function
+  void calibrate_accel();
 
-    // Updates the IMU's orientation
-    void run();
+  // Updates the IMU's orientation
+  void run();
 
-    // Returns the roll angle of the aircraft in degrees
-    //  -180 < roll < 180
-    float roll();
+  // Returns the roll angle of the aircraft in degrees
+  //  -180 < roll < 180
+  float roll();
 
-    // Returns the pitch angle of the aircraft in degrees
-    //  -90 < pitch < 90
-    float pitch();
+  // Returns the pitch angle of the aircraft in degrees
+  //  -90 < pitch < 90
+  float pitch();
 
-    // Returns the yaw angle of the aircraft in degrees
-    //  -180 < yaw < 180
-    float yaw();
+  // Returns the yaw angle of the aircraft in degrees
+  //  -180 < yaw < 180
+  float yaw();
 
-    int32_t get_raw(uint8_t val);
+  int16_t get_raw(uint8_t val);
 
-    // Use as args for get_raw() and MPU6050::get()
-    // Indexes for MPU6050 data array
-    static constexpr uint8_t ACCELX = 0;
-    static constexpr uint8_t ACCELY = 1;
-    static constexpr uint8_t ACCELZ = 2;
-    static constexpr uint8_t TEMP = 3;
-    static constexpr uint8_t GYROX = 4;
-    static constexpr uint8_t GYROY = 5;
-    static constexpr uint8_t GYROZ = 6;
+  // Use as args for get_raw() and MPU6050::get()
+  // Indexes for MPU6050 data array
+  static constexpr uint8_t ACCELX = 0;
+  static constexpr uint8_t ACCELY = 1;
+  static constexpr uint8_t ACCELZ = 2;
+  static constexpr uint8_t TEMP = 3;
+  static constexpr uint8_t GYROX = 4;
+  static constexpr uint8_t GYROY = 5;
+  static constexpr uint8_t GYROZ = 6;
 
 private:
-    static constexpr float RADIANS_PER_DEGREE = 0.01745329;
+  static constexpr float RADIANS_PER_DEGREE = 0.01745329;
 
-    struct Quaternion
-    {
-        float w, x, y, z;
-    };
+  struct Quaternion
+  {
+    float w, x, y, z;
+  };
 
-    // computes then returns the product of two quaternions
-    Quaternion product(const Quaternion &p, const Quaternion &q);
+  // computes then returns the product of two quaternions
+  Quaternion product(const Quaternion &p, const Quaternion &q);
 
-    // computes then returns the norm/length of a quaternion
-    float norm(const Quaternion &q);
+  // computes then returns the norm/length of a quaternion
+  float norm(const Quaternion &q);
 
-    struct Vector
-    {
-        float x, y, z;
-    };
+  struct Vector
+  {
+    float x, y, z;
+  };
 
-    // computes then returns the norm/length of a quaternion
-    float norm(const Vector &v);
+  // computes then returns the norm/length of a quaternion
+  float norm(const Vector &v);
 
-    Quaternion orientation;
+  Quaternion orientation;
 
-    float x_angle, y_angle, z_angle;
+  float x_angle, y_angle, z_angle;
 
-    float x_angle_accel, y_angle_accel;
+  float x_angle_accel, y_angle_accel;
 
-    float x_zero, y_zero, z_zero;
+  float x_zero, y_zero, z_zero;
 
-    unsigned long timer;
+  unsigned long timer;
 
-    // Manages I2C interface with the MPU6050 sensor
-    class Mpu6050
-    {
-    public:
-        Mpu6050();
+  // Manages I2C interface with the MPU6050 sensor
+  class Mpu6050
+  {
+  public:
+    Mpu6050();
 
-        // Sets up I2C communication with the MPU6050 sensor
-        void begin();
+    // Sets up I2C communication with the MPU6050 sensor
+    void begin();
 
-        // Fills data array with the current MPU6050 measurements
-        void fetch();
+    // Fills data array with the current MPU6050 measurements
+    void fetch();
 
-        // Returns the requested raw MPU6050 data
-        // val - one of the following constant expressions:
-        // ACCELX, ACCELY, ACCELZ, GYROX, GYROY, GYROZ
-        int32_t get(uint8_t val);
+    // Returns the requested raw MPU6050 data
+    // val - one of the following constant expressions:
+    // ACCELX, ACCELY, ACCELZ, GYROX, GYROY, GYROZ
+    int16_t get(uint8_t val);
 
-        static constexpr float TICKS_PER_DEGREE = 0.0152672;
-        static constexpr float TICKS_PER_G = 4096.0;
+    static constexpr float TICKS_PER_DEGREE = 0.0152672;
+    static constexpr float TICKS_PER_G = 4096.0;
 
-    private:
-        int32_t data[7];
-    };
+  private:
+    int16_t data[7];
+  };
 
-    Mpu6050 mpu;
+  Mpu6050 mpu;
 
-    uint8_t status_led;
+  uint8_t status_led;
 };
 
 #endif // IMU_H
