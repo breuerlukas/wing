@@ -1,12 +1,13 @@
 #ifndef WING_ENGINE_H
 #define WING_ENGINE_H
 
-#include "servo/servo.h"
+#include "Arduino.h"
+#include "PWMServo.h"
 
 class Engine {
 private:
   int esc_pin_;
-  Servo esc_;
+  PWMServo esc_;
   int thrust_;
 public:
   Engine(int pin);
