@@ -15,17 +15,17 @@ void Surfaces::Initialize() {
 }
 
 void Surfaces::PerformAsyncAileronMovement(int value) {
-  aileron_temp_values_.push_back(value);
+  aileron_temp_values_.add(value);
 }
 
 void Surfaces::PerformSyncRuddervatorMovement(int value) {
-  right_ruddervator_temp_values_.push_back(value);
-  left_ruddervator_temp_values_.push_back(-value);
+  right_ruddervator_temp_values_.add(value);
+  left_ruddervator_temp_values_.add(-value);
 }
 
 void Surfaces::PerformAsyncRuddervatorMovement(int value) {
-  right_ruddervator_temp_values_.push_back(value);
-  left_ruddervator_temp_values_.push_back(value);
+  right_ruddervator_temp_values_.add(value);
+  left_ruddervator_temp_values_.add(value);
 }
 
 void Surfaces::Flush() {
@@ -35,27 +35,27 @@ void Surfaces::Flush() {
 
 void Surfaces::FlushAilerons() {
   int accumulated = 90;
-  for (int value : aileron_temp_values_) {
-    accumulated += value;
+  for (int i = 0; i < aileron_temp_values_.size(); i++) {
+    accumulated += aileron_temp_values_.get(i);
   }
   aileron_temp_values_.clear();
-  accumulated = std::min(std::max(accumulated, 0), 180);
+  accumulated = MIN(MAX(accumulated, 0), 180);
   aileron_->Move(accumulated);
 }
 
 void Surfaces::FlushRuddervators() {
   int accumulatedRight = 90;
-  for (int value : right_ruddervator_temp_values_) {
-    accumulatedRight += value;
+  for (int i = 0; i < right_ruddervator_temp_values_.size(); i++) {
+    accumulatedRight += right_ruddervator_temp_values_.get(i);
   }
   right_ruddervator_temp_values_.clear();
   int accumulatedLeft = 90;
-  for (int value : left_ruddervator_temp_values_) {
-    accumulatedLeft += value;
+  for (int i = 0; i < left_ruddervator_temp_values_.size(); i++) {
+    accumulatedLeft += left_ruddervator_temp_values_.get(i);
   }
   left_ruddervator_temp_values_.clear();
-  accumulatedRight = std::min(std::max(accumulatedRight, 0), 180);
-  accumulatedLeft = std::min(std::max(accumulatedLeft, 0), 180);
+  accumulatedRight = MIN(MAX(accumulatedRight, 0), 180);
+  accumulatedLeft = MIN(MAX(accumulatedLeft, 0), 180);
   right_ruddervator_->Move(accumulatedRight);
   left_ruddervator_->Move(accumulatedLeft);
 }

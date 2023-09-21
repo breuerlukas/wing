@@ -1,7 +1,6 @@
 #ifndef WING_MISSION_H
 #define WING_MISSION_H
 
-#include <ArduinoSTL.h>
 #include "waypoint.h"
 
 enum MissionStatus {

@@ -2,19 +2,19 @@
 #define WING_TRANSMITTER_H
 
 #include <cstddef>
-#include "ArduinoSTL.h"
+#include "list/SimpleList.h"
 #include "crsf.h"
 #include "channel/channel.h"
 #include "channel/stick.h"
 
 class Transmitter {
 private:
-  CRSF crsf_ = CRSF(Serial);
+  CRSF crsf_ = CRSF(Serial1);
   Stick* throttle_stick_;
   Stick* elevator_stick_;
   Stick* aileron_stick_;
   Stick* rudder_stick_;
-  std::vector<Channel*> channels_;
+  SimpleList<Channel*> channels_;
 public:
   Transmitter(Stick* throttleStick, Stick* elevatorStick, Stick* aileronStick,
     Stick* rudderStick);

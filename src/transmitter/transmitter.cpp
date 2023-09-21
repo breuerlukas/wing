@@ -13,7 +13,7 @@ Transmitter::Transmitter(Stick* throttleStick, Stick* elevatorStick,
 }
 
 void Transmitter::RegisterChannel(Channel* channel) {
-  channels_.push_back(channel);
+  channels_.add(channel);
 }
 
 void Transmitter::Initialize() {
@@ -23,7 +23,7 @@ void Transmitter::Initialize() {
 void Transmitter::Update() {
   crsf_.Update();
   for (int i = 0; i < channels_.size(); i++) {
-    channels_[i]->Update(crsf_.FindChannelValue(channels_[i]->Id() + 1));
+    channels_.get(i)->Update(crsf_.FindChannelValue(channels_.get(i)->Id() + 1));
   }
 }
 
@@ -43,6 +43,5 @@ Stick* Transmitter::RudderStick() {
 }
 
 void Transmitter::RemoveChannel(Channel* channel) {
-  channels_.erase(std::remove(channels_.begin(), channels_.end(), channel),
-    channels_.end());
+  channels_.remove(channels_.searchNext(channel));
 }
