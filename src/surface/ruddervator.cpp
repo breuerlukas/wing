@@ -9,5 +9,5 @@ void Ruddervator::Initialize() {
 }
 
 void Ruddervator::Move(int value) {
-  servo_.writeAngle(value);
+  servo_.write(value);
 }
