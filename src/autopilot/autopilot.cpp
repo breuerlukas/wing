@@ -83,7 +83,6 @@ float Autopilot::CalculateRollAngle(Direction direction, double course) {
   double leftTurnAngle = -fmod((course - direction.Bearing()) + 360, 360);
   double rightTurnAngle = fmod((direction.Bearing() - course) + 360, 360);
   double rollAngleDifference = -leftTurnAngle < rightTurnAngle ? leftTurnAngle : rightTurnAngle;
-  //Serial.println(rollAngleDifference);
   if (fabs(rollAngleDifference) > 30) {
     return (rollAngleDifference < 0 ? -1 : 1) * (float) AUTOPILOT_MAX_BANK_ANGLE;
   }
@@ -92,8 +91,8 @@ float Autopilot::CalculateRollAngle(Direction direction, double course) {
 }
 
 float Autopilot::CalculatePitchAngleManual() {
-  float value = ((float) 1 / 500) * (transmitter_->ElevatorStick()->Value() - 1500);
-  if (value < 0) {
+  float value = ((float) 1 / 500) * ((float) transmitter_->ElevatorStick()->Value() - 1500);
+  if (value > 0) {
     return value * MAX_PITCH_ANGLE;
   }
   return value * MIN_PITCH_ANGLE;
