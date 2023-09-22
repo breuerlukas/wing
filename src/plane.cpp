@@ -32,28 +32,35 @@ void Plane::Initialize() {
   }
   led_->ChangeState(kDisabled);
   transmitter_->Initialize();
-  //autopilot_->Initialize();
+  autopilot_->Initialize();
 }
 
 void Plane::Tick() {
   transmitter_->Update();
   imu_->run();
   altimeter_->Tick();
-  operation_->Recalculate();
   FeedGps();
   if (gps_.location.isUpdated()) {
-    plane_course_ = gps_.courseTo(plane_location_->Latitude(),
-      plane_location_->Longitude(), gps_.location.lat(), gps_.location.lng());
+    UpdatePlaneCourse();
     plane_location_->Update(gps_.location.lat(), gps_.location.lng());
   }
-  /*autopilot_->Tick(plane_course_);
+  autopilot_->Tick(plane_course_);
   if (autopilot_->State() == kDisengaged) {
     operation_->Recalculate();
-  }*/
+  }
 }
 
 void Plane::FeedGps() {
   while (Serial3.available()) {
     gps_.encode(Serial3.read());
+  }
+}
+
+void Plane::UpdatePlaneCourse() {
+  if (!(plane_location_->Latitude() == gps_.location.lat() &&
+        plane_location_->Longitude() == gps_.location.lng())
+  ) {
+    plane_course_ = gps_.courseTo(plane_location_->Latitude(),
+      plane_location_->Longitude(), gps_.location.lat(), gps_.location.lng());
   }
 }

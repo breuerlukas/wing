@@ -24,6 +24,7 @@ private:
   Led* led_;
   double plane_course_;
   void FeedGps();
+  void UpdatePlaneCourse();
 public:
   Plane(Transmitter* transmitter, Imu* imu, Altimeter* altimeter, Engine* engine,
     Surfaces* surfaces, Location* planeLocation,
