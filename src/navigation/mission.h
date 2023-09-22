@@ -1,6 +1,7 @@
 #ifndef WING_MISSION_H
 #define WING_MISSION_H
 
+#include "list/SimpleList.h"
 #include "waypoint.h"
 
 enum MissionStatus {
@@ -10,11 +11,13 @@ enum MissionStatus {
 
 class Mission {
 private:
-  Waypoint** waypoints_;
+  SimpleList<Waypoint*> waypoints_;
   int waypoint_index_ = 0;
   MissionStatus mission_status_ = kInactive;
 public:
-  Mission(Waypoint** waypoints);
+  Mission();
+  void AddWaypoint(Waypoint* waypoint);
+  void RemoveWaypoint(Waypoint* waypoint);
   void Begin();
   void Next();
   Waypoint* Current();

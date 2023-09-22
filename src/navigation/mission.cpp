@@ -1,7 +1,15 @@
 #include "mission.h"
 
-Mission::Mission(Waypoint** waypoints) : waypoints_(waypoints) {
+Mission::Mission() {
 
+}
+
+void Mission::AddWaypoint(Waypoint *waypoint) {
+  waypoints_.add(waypoint);
+}
+
+void Mission::RemoveWaypoint(Waypoint *waypoint) {
+  waypoints_.remove(waypoints_.search(waypoint));
 }
 
 void Mission::Begin() {
@@ -9,7 +17,7 @@ void Mission::Begin() {
 }
 
 void Mission::Next() {
-  if (waypoint_index_ + 1 == sizeof(waypoints_) / sizeof(waypoints_[0])) {
+  if (waypoint_index_ + 1 == waypoints_.size()) {
     Abort();
     return;
   }
@@ -17,7 +25,7 @@ void Mission::Next() {
 }
 
 Waypoint* Mission::Current() {
-  return waypoints_[waypoint_index_];
+  return waypoints_.get(waypoint_index_);
 }
 
 void Mission::Abort() {
