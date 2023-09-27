@@ -118,11 +118,11 @@ void Autopilot::AdjustPlaneOrientation(float desiredRollAngle, float desiredPitc
 }
 
 void Autopilot::AdjustPlaneRollAngle(float desiredRollAngle) {
-  float currentRollAngle = imu_->roll() - 10;
+  float currentRollAngle = imu_->roll();
   float error = desiredRollAngle - currentRollAngle;
   error = (error < 0 ? -1 : 1) * MIN(pow(fabs(error / MAX_BANK_ANGLE), 1.2), 1) * MAX_BANK_ANGLE;
   surfaces_->PerformAsyncAileronMovement((int) (roll_pid_controller_->
-    Calculate(currentRollAngle, error)));
+      Calculate(currentRollAngle, error)) + 5);
 }
 
 void Autopilot::AdjustPlanePitchAngle(float desiredPitchAngle) {
