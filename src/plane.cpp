@@ -30,9 +30,9 @@ void Plane::Initialize() {
   while (gps_.satellites.value() < 1) {
     FeedGps();
   }
-  led_->ChangeState(kDisabled);
   transmitter_->Initialize();
   autopilot_->Initialize();
+  led_->ChangeState(kDisabled);
 }
 
 void Plane::Tick() {
