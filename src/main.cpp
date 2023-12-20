@@ -19,10 +19,10 @@ const int kEngineSwitchId = 7;
 const int kStabilizationSwitchId = 5;
 const int kAutopilotSwitchId = 6;
 const int kAutopilotModeSwitchId = 4;
-const int kEnginePin = 2;
-const int kAileronPin = 3;
-const int kRightRuddervatorPin = 4;
-const int kLeftRuddervatorPin = 5;
+const int kEnginePin = 8;
+const int kLeftRuddervatorPin = 9;
+const int kRightRuddervatorPin = 10;
+const int kAileronPin = 11;
 
 Plane* plane;
 
