@@ -48,13 +48,12 @@ void Autopilot::Tick(double course) {
     Tick(course);
     return;
   }
+  float rollAngle = CalculateRollAngle(direction, course);
   if (autopilot_mode_switch_->State() == kUp) {
-    AdjustPlaneOrientation(CalculateRollAngle(direction, course),
-      CalculatePitchAngleManual());
+    AdjustPlaneOrientation(rollAngle, CalculatePitchAngleManual());
     return;
   }
-  AdjustPlaneOrientation(CalculateRollAngle(direction, course),
-    CalculatePitchAngleAltitude());
+  AdjustPlaneOrientation(rollAngle, CalculatePitchAngleAltitude());
 }
 
 bool Autopilot::CheckAutopilotInterrupt() {
