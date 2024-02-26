@@ -15,7 +15,7 @@
 
 // ********** FILTER GAINS **********
 #define ACCEL_FILTER_GAIN 0.1
-#define DRIFT_FILTER_GAIN 0.98
+#define DRIFT_FILTER_GAIN 0.99
 //#define ENABLE_GYRO_DRIFT_FILTER
 //NOTE: increases run() runtime by 10-15%
 
@@ -27,7 +27,7 @@
 // ********** IMU CALIBRATION ROUTINE SETTINGS **********
 #define PRE_CALIBRATION_REST_TIMER 1500
 #define MIN_ACCEL_DIFF 200
-#define GYRO_CALIBRATION_READINGS 2000
+#define GYRO_CALIBRATION_READINGS 10000
 #define ACCEL_CALIBRATION_READINGS 5000
 // When enabled, the aircraft does not have to be level during calibration.
 // Instead, the net acceleration vector will be used to determine initial
