@@ -28,3 +28,8 @@ double Location::Latitude() {
 double Location::Longitude() {
   return longitude_;
 }
+
+bool Location::IsEquals(Location otherLocation) {
+  return latitude_ == otherLocation.Latitude() &&
+    longitude_ == otherLocation.Longitude();
+}

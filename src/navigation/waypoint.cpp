@@ -13,3 +13,8 @@ Location Waypoint::Location() {
 double Waypoint::Altitude() {
   return altitude_;
 }
+
+bool Waypoint::IsEquals(Waypoint otherWaypoint) {
+  return location_.IsEquals(otherWaypoint.Location()) &&
+    altitude_ == otherWaypoint.Altitude();
+}

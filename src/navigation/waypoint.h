@@ -11,6 +11,7 @@ public:
   Waypoint(Location location, double altitude);
   Location Location();
   double Altitude();
+  bool IsEquals(Waypoint otherDirection);
 };
 
 

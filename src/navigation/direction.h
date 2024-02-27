@@ -9,6 +9,7 @@ public:
   Direction(double bearing, double distance);
   double Bearing();
   double Distance();
+  bool IsEquals(Direction otherDirection);
 };
 
 

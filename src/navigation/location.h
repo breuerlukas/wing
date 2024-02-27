@@ -16,6 +16,7 @@ public:
   Direction DirectionTo(Location destination);
   double Latitude();
   double Longitude();
+  bool IsEquals(Location otherLocation);
 };
 
 
