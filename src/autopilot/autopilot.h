@@ -37,7 +37,9 @@ private:
   Mission* mission_;
   AutopilotState state_ = kDisengaged;
   boolean is_interrupted_ = false;
+  bool CheckAutopilotState();
   bool CheckAutopilotInterrupt();
+  bool CheckWaypointReaching(double course, Direction direction);
   void UpdateAutopilotState();
   void ApplyEngineThrust();
   float CalculateRollAngle(Direction direction, double course);

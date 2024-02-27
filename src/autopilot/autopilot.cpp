@@ -26,26 +26,12 @@ void Autopilot::Initialize() {
 
 void Autopilot::Tick(double course) {
   UpdateAutopilotState();
-  if (is_interrupted_ && state_ == kEngaged) {
-    state_ = kDisengaged;
-    return;
-  }
-  if (is_interrupted_ && state_ == kDisengaged) {
-    is_interrupted_ = false;
-    return;
-  }
-  if (state_ == kDisengaged) {
-    return;
-  }
-  if (CheckAutopilotInterrupt()) {
-    is_interrupted_ = true;
+  if (!CheckAutopilotState()) {
     return;
   }
   ApplyEngineThrust();
   Direction direction = plane_location_->DirectionTo(mission_->Current()->Location());
-  if (direction.Distance() <= DISTANCE_TO_WAYPOINT_TO_SKIP) {
-    mission_->Next();
-    Tick(course);
+  if (CheckWaypointReaching(course, direction)) {
     return;
   }
   float rollAngle = CalculateRollAngle(direction, course);
@@ -54,6 +40,25 @@ void Autopilot::Tick(double course) {
     return;
   }
   AdjustPlaneOrientation(rollAngle, CalculatePitchAngleAltitude());
+}
+
+bool Autopilot::CheckAutopilotState() {
+  if (is_interrupted_ && state_ == kEngaged) {
+    state_ = kDisengaged;
+    return false;
+  }
+  if (is_interrupted_ && state_ == kDisengaged) {
+    is_interrupted_ = false;
+    return false;
+  }
+  if (state_ == kDisengaged) {
+    return false;
+  }
+  if (CheckAutopilotInterrupt()) {
+    is_interrupted_ = true;
+    return false;
+  }
+  return true;
 }
 
 bool Autopilot::CheckAutopilotInterrupt() {
@@ -68,6 +73,15 @@ bool Autopilot::CheckAutopilotInterrupt() {
 
 void Autopilot::UpdateAutopilotState() {
   state_ = autopilot_switch_->State() == kOn ? kEngaged : kDisengaged;
+}
+
+bool Autopilot::CheckWaypointReaching(double course, Direction direction) {
+  if (direction.Distance() <= DISTANCE_TO_WAYPOINT_TO_SKIP) {
+    mission_->Next();
+    Tick(course);
+    return true;
+  }
+  return false;
 }
 
 void Autopilot::ApplyEngineThrust() {
