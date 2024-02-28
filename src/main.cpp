@@ -49,7 +49,8 @@ void setup() {
   Operation* operation = new Operation(transmitter, imu, engine, surfaces,
     engineSwitch, stabilizationSwitch, rollPidController, pitchPidController);
   Mission* mission = new Mission();
-  mission->AddWaypoint(new Waypoint(Location(50.75672023285704, 7.114160700111882), 30.0));
+  mission->AddWaypoint(new Waypoint(Location(50.75747623282363, 7.110533751953303), 30.0));
+  mission->AddWaypoint(new Waypoint(Location(50.75853223912494, 7.111114872414449), 30.0));
   Autopilot* autopilot = new Autopilot(transmitter, imu, altimeter, engine, surfaces,
     engineSwitch, autopilotSwitch, autopilotModeSwitch, rollPidController,
     pitchPidController, planeLocation, mission);
