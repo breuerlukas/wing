@@ -59,9 +59,9 @@ float Operation::CalculateRollAngle(int aileronStickValue) {
 float Operation::CalculatePitchAngle(int elevatorStickValue) {
   float value = ((float) 1 / 500) * (elevatorStickValue - 1500);
   if (value > 0) {
-    return value * MAX_PITCH_ANGLE;
+    return value * MAX_CLIMB_ANGLE;
   }
-  return value * MIN_PITCH_ANGLE;
+  return value * MAX_DESCENT_ANGLE;
 }
 
 void Operation::AdjustPlaneOrientation(float desiredRollAngle, float desiredPitchAngle) {
