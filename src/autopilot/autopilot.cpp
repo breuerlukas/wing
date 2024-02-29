@@ -106,20 +106,19 @@ float Autopilot::CalculateRollAngle(Direction direction, double course) {
 float Autopilot::CalculatePitchAngleManual() {
   float value = ((float) 1 / 500) * ((float) transmitter_->ElevatorStick()->Value() - 1500);
   if (value > 0) {
-    return value * MAX_PITCH_ANGLE;
+    return value * MAX_CLIMB_ANGLE;
   }
-  return value * MIN_PITCH_ANGLE;
+  return value * MAX_DESCENT_ANGLE;
 }
 
 float Autopilot::CalculatePitchAngleAltitude() {
   float currentAltitude = altimeter_->RelativeAltitude();
-  float error = (mission_->Current()->Altitude() - currentAltitude) * 5;
-  float pitchAngle;
-  if (fabs(error) > 10) {
-    pitchAngle = (error < 0 ? -MIN_PITCH_ANGLE : MAX_PITCH_ANGLE) * ((float) 2 / 3);
-  } else {
-    pitchAngle = (error < 0 ? -MIN_PITCH_ANGLE : MAX_PITCH_ANGLE) *
-      ((float) 2 / 3) * pow(fabs(error / 10), 1.2);
+  float error = mission_->Current()->Altitude() - currentAltitude;
+  float maxAngle = error < 0 ? -AUTOPILOT_MAX_DESCENT_ANGLE :
+    AUTOPILOT_MAX_CLIMB_ANGLE;
+  float pitchAngle = maxAngle;
+  if (fabs(error) <= 10) {
+    pitchAngle *= pow(fabs(error / 10), 1.2);
   }
   return pitchAngle;
 }
