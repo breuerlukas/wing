@@ -10,6 +10,8 @@ private:
   float d_weight_;
   long previous_time_ = 0;
   float previous_state_ = 0;
+  float previous_error_ = 0;
+  float previous_value_ = 0;
   float p_value_ = 0;
   float i_value_ = 0;
   float d_value_ = 0;
