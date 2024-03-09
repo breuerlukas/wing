@@ -44,8 +44,8 @@ void setup() {
   Surfaces* surfaces = new Surfaces(new Aileron(kAileronPin),
     new Ruddervator(kRightRuddervatorPin), new Ruddervator(kLeftRuddervatorPin));
   Location* planeLocation = new Location(0, 0);
-  Pid* rollPidController = new Pid(0.7, 0, 0.05);
-  Pid* pitchPidController = new Pid(1, 0, 0.1);
+  Pid* rollPidController = new Pid(0.5, 0, 0.02);
+  Pid* pitchPidController = new Pid(0.8, 0, 0.05);
   Operation* operation = new Operation(transmitter, imu, engine, surfaces,
     engineSwitch, stabilizationSwitch, rollPidController, pitchPidController);
   Mission* mission = new Mission();
