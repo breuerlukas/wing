@@ -23,7 +23,7 @@ void Plane::Initialize() {
   surfaces_->Initialize();
   delay(2000);
   led_->ChangeState(kEnabled);
-  imu_->calibrate();
+  imu_->Initialize();
   altimeter_->Initialize();
   altimeter_->Calibrate();
   Serial3.begin(38400);
@@ -37,7 +37,7 @@ void Plane::Initialize() {
 
 void Plane::Tick() {
   transmitter_->Update();
-  imu_->run();
+  imu_->Tick();
   altimeter_->Tick();
   FeedGps();
   if (gps_.location.isUpdated()) {
