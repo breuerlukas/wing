@@ -71,15 +71,14 @@ void Operation::AdjustPlaneOrientation(float desiredRollAngle, float desiredPitc
 }
 
 void Operation::AdjustPlaneRollAngle(float desiredRollAngle) {
-  float currentRollAngle = imu_->roll();
+  float currentRollAngle = imu_->Roll();
   float error = desiredRollAngle - currentRollAngle;
-  error = (error < 0 ? -1 : 1) * MIN(pow(fabs(error / MAX_BANK_ANGLE), 1.2), 1) * MAX_BANK_ANGLE;
   surfaces_->PerformAsyncAileronMovement((int) (roll_pid_controller_->
     Calculate(currentRollAngle, error)) + 5);
 }
 
 void Operation::AdjustPlanePitchAngle(float desiredPitchAngle) {
-  float currentPitchAngle = -imu_->pitch() - 5;
+  float currentPitchAngle = -imu_->Pitch() - 5;
   float error = desiredPitchAngle - currentPitchAngle;
   surfaces_->PerformSyncRuddervatorMovement(-(int) (pitch_pid_controller_->
     Calculate(currentPitchAngle, error)));
