@@ -114,9 +114,8 @@ float Autopilot::CalculatePitchAngleManual() {
 float Autopilot::CalculatePitchAngleAltitude() {
   float currentAltitude = altimeter_->RelativeAltitude();
   float error = mission_->Current()->Altitude() - currentAltitude;
-  float maxAngle = error < 0 ? -AUTOPILOT_MAX_DESCENT_ANGLE :
+  float pitchAngle = error < 0 ? -AUTOPILOT_MAX_DESCENT_ANGLE :
     AUTOPILOT_MAX_CLIMB_ANGLE;
-  float pitchAngle = maxAngle;
   if (fabs(error) <= 10) {
     pitchAngle *= pow(fabs(error / 10), 1.2);
   }
