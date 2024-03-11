@@ -14,6 +14,7 @@ private:
   List<Waypoint*> waypoints_;
   int waypoint_index_ = 0;
   MissionStatus mission_status_ = kInactive;
+  int FindWaypointIndex(Waypoint* waypoint);
 public:
   Mission();
   void AddWaypoint(Waypoint* waypoint);

@@ -17,11 +17,25 @@ void Mission::Begin() {
 }
 
 void Mission::Next() {
+  Waypoint* currentWaypoint = Current();
+  if (currentWaypoint->HasFollowingWaypoint()) {
+    waypoint_index_ = FindWaypointIndex(currentWaypoint->FollowingWaypoint());
+    return;
+  }
   if (waypoint_index_ + 1 == waypoints_.size()) {
     Abort();
     return;
   }
   waypoint_index_++;
+}
+
+int Mission::FindWaypointIndex(Waypoint *waypoint) {
+  for (int i = 0; i < waypoints_.size(); i++) {
+    if (waypoints_.get(i) == waypoint) {
+      return i;
+    }
+  }
+  return -1;
 }
 
 Waypoint* Mission::Current() {
