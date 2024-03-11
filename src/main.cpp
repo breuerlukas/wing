@@ -24,6 +24,13 @@ const int kLeftRuddervatorPin = 9;
 const int kRightRuddervatorPin = 10;
 const int kAileronPin = 11;
 
+//TODO:
+// - Config ausbauen (Verschiedene Flugzeugkonfigurationen)
+// -> Statische Werte in einer festen Config Klasse festhalten
+// - Waypoint / Mission System ausbauen
+// -> Komplexere Missionen zulassen
+// - Barometer weiter testen
+
 Plane* plane;
 
 void setup() {
@@ -49,8 +56,8 @@ void setup() {
   Operation* operation = new Operation(transmitter, imu, engine, surfaces,
     engineSwitch, stabilizationSwitch, rollPidController, pitchPidController);
   Mission* mission = new Mission();
-  mission->AddWaypoint(new Waypoint(Location(50.75747623282363, 7.110533751953303), 10.0));
-  mission->AddWaypoint(new Waypoint(Location(50.75853223912494, 7.111114872414449), 10.0));
+  mission->AddWaypoint(new Waypoint(Location(50.75747623282363, 7.110533751953303), 5.0));
+  mission->AddWaypoint(new Waypoint(Location(50.75853223912494, 7.111114872414449), 5.0));
   Autopilot* autopilot = new Autopilot(transmitter, imu, altimeter, engine, surfaces,
     engineSwitch, autopilotSwitch, autopilotModeSwitch, rollPidController,
     pitchPidController, planeLocation, mission);
