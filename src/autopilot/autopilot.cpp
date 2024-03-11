@@ -63,12 +63,14 @@ bool Autopilot::CheckAutopilotState() {
 
 bool Autopilot::CheckAutopilotInterrupt() {
   int aileronStickValue = transmitter_->AileronStick()->Value();
+  int minimalInput = (1500 - AUTOPILOT_DISCONNECT_OVERWRITE);
+  int maximumInput = (1500 + AUTOPILOT_DISCONNECT_OVERWRITE);
   if (autopilot_mode_switch_->State() == kUp) {
-    return (aileronStickValue < 1200 || aileronStickValue > 1800);
+    return (aileronStickValue < minimalInput || aileronStickValue > maximumInput);
   }
   int elevatorStickValue = transmitter_->ElevatorStick()->Value();
-  return (aileronStickValue < 1200 || aileronStickValue > 1800) ||
-    (elevatorStickValue < 1200 || elevatorStickValue > 1800);
+  return (aileronStickValue < minimalInput || aileronStickValue > maximumInput) ||
+    (elevatorStickValue < minimalInput || elevatorStickValue > maximumInput);
 }
 
 void Autopilot::UpdateAutopilotState() {
@@ -116,8 +118,8 @@ float Autopilot::CalculatePitchAngleAltitude() {
   float error = mission_->Current()->Altitude() - currentAltitude;
   float pitchAngle = error < 0 ? -AUTOPILOT_MAX_DESCENT_ANGLE :
     AUTOPILOT_MAX_CLIMB_ANGLE;
-  if (fabs(error) <= 10) {
-    pitchAngle *= pow(fabs(error / 10), 1.2);
+  if (fabs(error) <= AUTOPILOT_VERTICAL_ATTENUATION_LIMIT) {
+    pitchAngle *= pow(fabs(error / AUTOPILOT_VERTICAL_ATTENUATION_LIMIT), 1.2);
   }
   return pitchAngle;
 }
