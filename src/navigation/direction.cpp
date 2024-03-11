@@ -1,6 +1,7 @@
 #include "direction.h"
 
-Direction::Direction(double bearing, double distance) : bearing_(bearing), distance_(distance) {
+Direction::Direction(double bearing, double distance)
+  : bearing_(bearing), distance_(distance) {
 
 }
 
