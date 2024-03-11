@@ -4,7 +4,7 @@ Altimeter::Altimeter(float localQnh) : local_qnh_(localQnh) {
 
 }
 
-Altimeter::Altimeter() : Altimeter(1013.25) {
+Altimeter::Altimeter() : Altimeter(kDefaultQnh) {
 
 }
 
@@ -21,11 +21,11 @@ void Altimeter::Configure() {
 
 void Altimeter::Calibrate() {
   float accumulated = 0;
-  for (int i = 0; i < 50; i++) {
+  for (int i = 0; i < ALTIMETER_CALIBRATION_INTERVALS; i++) {
     Tick();
     accumulated += current_altitude_;
   }
-  home_altitude_ = accumulated / 50;
+  home_altitude_ = accumulated / ALTIMETER_CALIBRATION_INTERVALS;
 }
 
 void Altimeter::Tick() {

@@ -3,6 +3,9 @@
 
 #include "Adafruit_BMP280.h"
 #include "Wire.h"
+#include "config/config.h"
+
+const float kDefaultQnh = 1013.25;
 
 class Altimeter {
 private:
