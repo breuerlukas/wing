@@ -21,7 +21,7 @@ void Operation::Recalculate() {
 
 void Operation::ApplyEngineThrust() {
   if (engine_switch_->State() == kOff) {
-    engine_->ApplyThrust(1000);
+    engine_->Idle();
     return;
   }
   engine_->ApplyThrust(transmitter_->ThrottleStick()->Value());

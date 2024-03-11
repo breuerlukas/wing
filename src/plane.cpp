@@ -19,7 +19,7 @@ TinyGPSPlus gps_;
 
 void Plane::Initialize() {
   engine_->Initialize();
-  engine_->ApplyThrust(1000);
+  engine_->Idle();
   surfaces_->Initialize();
   delay(2000);
   led_->ChangeState(kEnabled);

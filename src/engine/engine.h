@@ -12,6 +12,7 @@ private:
 public:
   Engine(int pin);
   void Initialize();
+  void Idle();
   void ApplyThrust(int thrust);
   int Thrust();
 };
