@@ -24,13 +24,6 @@ const int kLeftRuddervatorPin = 9;
 const int kRightRuddervatorPin = 10;
 const int kAileronPin = 11;
 
-//TODO:
-// - Config ausbauen (Verschiedene Flugzeugkonfigurationen)
-// -> Statische Werte in einer festen Config Klasse festhalten
-// - Barometer weiter testen
-// - Auto Launch implementieren
-// - Auto Landing implementieren
-
 Plane* plane;
 
 void setup() {
