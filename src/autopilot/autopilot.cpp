@@ -98,11 +98,11 @@ float Autopilot::CalculateRollAngle(Direction direction, double course) {
   double leftTurnAngle = -fmod((course - direction.Bearing()) + 360, 360);
   double rightTurnAngle = fmod((direction.Bearing() - course) + 360, 360);
   double rollAngleDifference = -leftTurnAngle < rightTurnAngle ? leftTurnAngle : rightTurnAngle;
-  if (fabs(rollAngleDifference) > 45) {
-    return (rollAngleDifference < 0 ? 1 : -1) * (float) AUTOPILOT_MAX_BANK_ANGLE;
+  float differenceSign = rollAngleDifference < 0 ? 1 : -1;
+  if (fabs(rollAngleDifference) > AUTOPILOT_MAX_BANK_ANGLE) {
+    return differenceSign * (float) AUTOPILOT_MAX_BANK_ANGLE;
   }
-  return (rollAngleDifference < 0 ? 1 : -1) * (float) AUTOPILOT_MAX_BANK_ANGLE *
-    pow(fabs(rollAngleDifference / 45), 1.2);
+  return differenceSign * (float) fabs(rollAngleDifference);
 }
 
 float Autopilot::CalculatePitchAngleManual() {
@@ -119,7 +119,7 @@ float Autopilot::CalculatePitchAngleAltitude() {
   float pitchAngle = error < 0 ? -AUTOPILOT_MAX_DESCENT_ANGLE :
     AUTOPILOT_MAX_CLIMB_ANGLE;
   if (fabs(error) <= AUTOPILOT_VERTICAL_ATTENUATION_LIMIT) {
-    pitchAngle *= pow(fabs(error / AUTOPILOT_VERTICAL_ATTENUATION_LIMIT), 1.2);
+    pitchAngle *= fabs(error / AUTOPILOT_VERTICAL_ATTENUATION_LIMIT);
   }
   return pitchAngle;
 }
