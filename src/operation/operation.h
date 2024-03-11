@@ -9,7 +9,7 @@
 #include "surface/surfaces.h"
 #include "transmitter/channel/dual-switch.h"
 #include "transmitter/channel/triple-switch.h"
-#include "limits/limits.h"
+#include "config/config.h"
 #include "pid/pid.h"
 
 class Operation {

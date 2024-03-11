@@ -27,9 +27,9 @@ const int kAileronPin = 11;
 //TODO:
 // - Config ausbauen (Verschiedene Flugzeugkonfigurationen)
 // -> Statische Werte in einer festen Config Klasse festhalten
-// - Waypoint / Mission System ausbauen
-// -> Komplexere Missionen zulassen
 // - Barometer weiter testen
+// - Auto Launch implementieren
+// - Auto Landing implementieren
 
 Plane* plane;
 

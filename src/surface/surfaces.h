@@ -2,7 +2,7 @@
 #define WING_SURFACES_H
 
 #include "list/list.h"
-#include "limits/limits.h"
+#include "config/config.h"
 #include "aileron.h"
 #include "ruddervator.h"
 

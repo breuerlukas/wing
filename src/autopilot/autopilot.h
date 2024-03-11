@@ -14,7 +14,7 @@
 #include "navigation/direction.h"
 #include "navigation/waypoint.h"
 #include "navigation/mission.h"
-#include "limits/limits.h"
+#include "config/config.h"
 
 enum AutopilotState {
   kEngaged,
