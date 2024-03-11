@@ -2,7 +2,7 @@
 #define WING_TRANSMITTER_H
 
 #include <cstddef>
-#include "list/SimpleList.h"
+#include "list/list.h"
 #include "crsf.h"
 #include "channel/channel.h"
 #include "channel/stick.h"
@@ -14,7 +14,7 @@ private:
   Stick* elevator_stick_;
   Stick* aileron_stick_;
   Stick* rudder_stick_;
-  SimpleList<Channel*> channels_;
+  List<Channel*> channels_;
 public:
   Transmitter(Stick* throttleStick, Stick* elevatorStick, Stick* aileronStick,
     Stick* rudderStick);
