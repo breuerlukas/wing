@@ -3,59 +3,52 @@
 
 #include <cmath>
 #include "transmitter/transmitter.h"
-#include "imu/imu.h"
 #include "altimeter/altimeter.h"
 #include "engine/engine.h"
-#include "surface/surfaces.h"
 #include "transmitter/channel/dual-switch.h"
 #include "transmitter/channel/triple-switch.h"
-#include "pid/pid.h"
 #include "navigation/location.h"
 #include "navigation/direction.h"
 #include "navigation/waypoint.h"
 #include "navigation/mission.h"
+#include "operation/operation.h"
+#include "autopilot/autolaunch.h"
+#include "autopilot/autoland.h"
 #include "config/config.h"
 
-enum AutopilotState {
-  kEngaged,
-  kDisengaged
+enum AutoPilotState {
+  kAutoPilotEngaged,
+  kAutoPilotDisengaged
 };
 
-class Autopilot {
+class AutoPilot {
 private:
   Transmitter* transmitter_;
-  Imu* imu_;
   Altimeter* altimeter_;
   Engine* engine_;
-  Surfaces* surfaces_;
-  DualSwitch* engine_switch_;
   DualSwitch* autopilot_switch_;
   TripleSwitch* autopilot_mode_switch_;
-  Pid* roll_pid_controller_;
-  Pid* pitch_pid_controller_;
   Location* plane_location_;
   Mission* mission_;
-  AutopilotState state_ = kDisengaged;
+  Operation* operation_;
+  AutoLaunch* auto_launch_;
+  AutoLand* auto_land_;
+  AutoPilotState state_ = kAutoPilotDisengaged;
   boolean is_interrupted_ = false;
   bool CheckAutopilotState();
   bool CheckAutopilotInterrupt();
   bool CheckWaypointReaching(double course, Direction direction);
   void UpdateAutopilotState();
-  void ApplyEngineThrust();
   float CalculateRollAngle(Direction direction, double course);
-  float CalculatePitchAngleManual();
-  float CalculatePitchAngleAltitude();
-  void AdjustPlaneOrientation(float desiredRollAngle, float desiredPitchAngle);
-  void AdjustPlaneRollAngle(float desiredRollAngle);
-  void AdjustPlanePitchAngle(float desiredPitchAngle);
+  float CalculatePitchAngle();
 public:
-  Autopilot(Transmitter* transmitter, Imu* imu, Altimeter* altimeter, Engine* engine,
-  Surfaces* surfaces, DualSwitch* engineSwitch, DualSwitch* autopilotSwitch,
-  TripleSwitch* autopilotModeSwitch, Pid* rollPidController, Pid* pitchPidController,
-  Location* planeLocation, Mission* mission);
+  AutoPilot(Transmitter* transmitter, Altimeter* altimeter, Engine* engine,
+    DualSwitch* autopilotSwitch, TripleSwitch* autopilotModeSwitch,
+    Location* planeLocation, Mission* mission, Operation* operation,
+    AutoLaunch* autoLaunch, AutoLand* autoLand);
   void Initialize();
   void Tick(double course);
-  AutopilotState State();
+  AutoPilotState State();
 };
 
 #endif //WING_AUTOPILOT_H

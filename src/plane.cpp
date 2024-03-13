@@ -2,7 +2,7 @@
 
 Plane::Plane(Transmitter* transmitter, Imu* imu, Altimeter* altimeter,
   Engine* engine, Surfaces* surfaces, Location* planeLocation,
-  Operation* operation, Autopilot* autopilot, Led* led)
+  Operation* operation, AutoPilot* autopilot, Led* led)
   : transmitter_(transmitter),
     imu_(imu),
     altimeter_(altimeter),
@@ -45,7 +45,7 @@ void Plane::Tick() {
     plane_location_->Update(gps_.location.lat(), gps_.location.lng());
   }
   autopilot_->Tick(plane_course_);
-  if (autopilot_->State() == kDisengaged) {
+  if (autopilot_->State() == kAutoPilotDisengaged) {
     operation_->Recalculate();
   }
 }

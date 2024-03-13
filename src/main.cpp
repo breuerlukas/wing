@@ -7,7 +7,13 @@
 #include "altimeter/altimeter.h"
 #include "engine/engine.h"
 #include "surface/surfaces.h"
+#include "navigation/location.h"
 #include "pid/pid.h"
+#include "operation/operation.h"
+#include "navigation/mission.h"
+#include "autopilot/autopilot.h"
+#include "autopilot/autolaunch.h"
+#include "autopilot/autoland.h"
 #include "led/led.h"
 #include "plane.h"
 
@@ -50,10 +56,12 @@ void setup() {
     engineSwitch, stabilizationSwitch, rollPidController, pitchPidController);
   Mission* mission = new Mission();
   mission->AddWaypoint(new Waypoint(Location(50.75747623282363, 7.110533751953303), 5.0));
-  mission->AddWaypoint(new Waypoint(Location(50.75853223912494, 7.111114872414449), 5.0));
-  Autopilot* autopilot = new Autopilot(transmitter, imu, altimeter, engine, surfaces,
-    engineSwitch, autopilotSwitch, autopilotModeSwitch, rollPidController,
-    pitchPidController, planeLocation, mission);
+  mission->AddWaypoint(new Waypoint(Location(50.75853223912494, 7.111114872414449), 10.0));
+  AutoLaunch* autoLaunch = new AutoLaunch(altimeter, engine, operation);
+  AutoLand* autoLand = new AutoLand(altimeter, engine, operation);
+  AutoPilot* autopilot = new AutoPilot(transmitter, altimeter, engine,
+    autopilotSwitch, autopilotModeSwitch, planeLocation, mission, operation,
+    autoLaunch, autoLand);
   Led* led = new Led(13);
   plane = new Plane(transmitter, imu, altimeter, engine, surfaces,
     planeLocation, operation, autopilot, led);

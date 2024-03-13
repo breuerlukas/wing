@@ -20,7 +20,7 @@ private:
   Surfaces* surfaces_;
   Location* plane_location_;
   Operation* operation_;
-  Autopilot* autopilot_;
+  AutoPilot* autopilot_;
   Led* led_;
   double plane_course_;
   void FeedGps();
@@ -28,7 +28,7 @@ private:
 public:
   Plane(Transmitter* transmitter, Imu* imu, Altimeter* altimeter, Engine* engine,
     Surfaces* surfaces, Location* planeLocation,
-    Operation* operation, Autopilot* autopilot, Led* led);
+    Operation* operation, AutoPilot* autopilot, Led* led);
   void Initialize();
   void Tick();
 };
