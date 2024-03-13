@@ -11,6 +11,8 @@ void Imu::Initialize() {
   sensor_.initializeDMP();
   sensor_.enableDMPSensor(INV_ICM20948_SENSOR_GAME_ROTATION_VECTOR);
   sensor_.setDMPODRrate(DMP_ODR_Reg_Quat6, 0);
+  sensor_.enableDMPSensor(INV_ICM20948_SENSOR_LINEAR_ACCELERATION);
+  sensor_.setDMPODRrate(DMP_ODR_Reg_Accel, 0);
   sensor_.enableFIFO();
   sensor_.enableDMP();
   sensor_.resetDMP();
@@ -23,9 +25,11 @@ void Imu::Tick() {
   if (!((sensor_.status == ICM_20948_Stat_Ok) || (sensor_.status == ICM_20948_Stat_FIFOMoreDataAvail))) {
     return;
   }
-  if ((data.header & DMP_header_bitmap_Quat6) <= 0) {
-    return;
-  }
+  CalculateRollAndPitch(data);
+  CalculateAcceleration(data);
+}
+
+void Imu::CalculateRollAndPitch(icm_20948_DMP_data_t data) {
   double q1 = ((double)data.Quat6.Data.Q1) / 1073741824.0;
   double q2 = ((double)data.Quat6.Data.Q2) / 1073741824.0;
   double q3 = ((double)data.Quat6.Data.Q3) / 1073741824.0;
@@ -40,10 +44,21 @@ void Imu::Tick() {
   roll_ = (float) -(asin(t2) * 180.0 / PI);
 }
 
+void Imu::CalculateAcceleration(icm_20948_DMP_data_t data) {
+  double x = data.Raw_Accel.Data.X;
+  double y = data.Raw_Accel.Data.Y;
+  double z = data.Raw_Accel.Data.Z;
+  acceleration_ = fabs(fabs(x) + fabs(y) + fabs(z) - 10000);
+}
+
 float Imu::Roll() {
   return roll_;
 }
 
 float Imu::Pitch(){
   return pitch_;
+}
+
+float Imu::Acceleration() {
+  return acceleration_;
 }
