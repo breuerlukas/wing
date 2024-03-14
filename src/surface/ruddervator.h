@@ -1,16 +1,11 @@
 #ifndef WING_RUDDERVATOR_H
 #define WING_RUDDERVATOR_H
 
-#include "PWMServo.h"
+#include "surface/surface.h"
 
-class Ruddervator {
-private:
-  int servo_pin_;
-  PWMServo servo_;
+class Ruddervator : public Surface {
 public:
   Ruddervator(int servoPin);
-  void Initialize();
-  void Move(int value);
 };
 
 
