@@ -14,6 +14,7 @@ public:
   void Initialize();
   void Idle();
   void ApplyThrust(int thrust);
+  void ApplyThrustPercentage(int percentage);
   int Thrust();
 };
 

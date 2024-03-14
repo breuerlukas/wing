@@ -17,6 +17,10 @@ void Engine::ApplyThrust(int thrust) {
   esc_.write(map(thrust, 1000, 2000, 0, 180));
 }
 
+void Engine::ApplyThrustPercentage(int percentage) {
+  ApplyThrust(1000 + 10 * percentage);
+}
+
 int Engine::Thrust() {
   return thrust_;
 }
