@@ -6,19 +6,26 @@
 #include "operation/operation.h"
 
 enum AutoLaunchState {
-  kAutoLaunchEngaged,
-  kAutoLaunchDisengaged
+  kAutoLaunchEnabled,
+  kAutoLaunchDisabled
 };
 
 class AutoLaunch {
 private:
+  Imu* imu_;
   Altimeter* altimeter_;
   Engine* engine_;
   Operation* operation_;
-  AutoLaunchState state_ = kAutoLaunchDisengaged;
+  AutoLaunchState state_ = kAutoLaunchDisabled;
+  bool engine_trigger_ = false;
+  void CheckEngineTrigger();
+  int CalculateEngineThrust();
+  void CheckTargetAltitudeReaching();
 public:
-  AutoLaunch(Altimeter* altimeter, Engine* engine, Operation* operation);
+  AutoLaunch(Imu* imu, Altimeter* altimeter, Engine* engine, Operation* operation);
   void Tick();
+  void Enable();
+  void Disable();
   AutoLaunchState State();
 };
 

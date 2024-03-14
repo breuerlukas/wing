@@ -57,7 +57,7 @@ void setup() {
   Mission* mission = new Mission();
   mission->AddWaypoint(new Waypoint(Location(50.75747623282363, 7.110533751953303), 5.0));
   mission->AddWaypoint(new Waypoint(Location(50.75853223912494, 7.111114872414449), 10.0));
-  AutoLaunch* autoLaunch = new AutoLaunch(altimeter, engine, operation);
+  AutoLaunch* autoLaunch = new AutoLaunch(imu, altimeter, engine, operation);
   AutoLand* autoLand = new AutoLand(altimeter, engine, operation);
   AutoPilot* autopilot = new AutoPilot(transmitter, altimeter, engine,
     autopilotSwitch, autopilotModeSwitch, planeLocation, mission, operation,
