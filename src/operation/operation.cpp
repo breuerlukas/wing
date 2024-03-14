@@ -28,40 +28,96 @@ void Operation::ApplyEngineThrust() {
 }
 
 void Operation::ApplySurfaceMovement() {
-  int aileronStickValue = transmitter_->AileronStick()->Value();
-  int elevatorStickValue = transmitter_->ElevatorStick()->Value();
-  int rudderStickValue = transmitter_->RudderStick()->Value();
-  surfaces_->PerformAsyncRuddervatorMovement(-((float) 90 / 500) * (rudderStickValue - 1500) * 0.5);
+  ApplyRudderMovement();
   if (stabilization_switch_->State() == kUp) {
-    surfaces_->PerformAsyncAileronMovement(((float) 90 / 500) * (aileronStickValue - 1500) * 0.5);
-    surfaces_->PerformSyncRuddervatorMovement(-((float) 90 / 500) * (elevatorStickValue - 1500) * 0.5);
-    surfaces_->Flush();
-    return;
-  }
-  if (stabilization_switch_->State() == kMiddle) {
-    AdjustPlaneRollAngle(CalculateRollAngle(aileronStickValue));
-    surfaces_->PerformSyncRuddervatorMovement(-((float) 90 / 500) * (elevatorStickValue - 1500) * 0.5);
-    surfaces_->Flush();
-    return;
-  }
-  if (stabilization_switch_->State() == kDown) {
-    AdjustPlaneOrientation(CalculateRollAngle(aileronStickValue),
-      CalculatePitchAngle(elevatorStickValue));
-    return;
+    ApplyManualSurfaceMovement();
+  } else if (stabilization_switch_->State() == kMiddle) {
+    ApplySemiSupportedSurfaceMovement();
+  } else if (stabilization_switch_->State() == kDown) {
+    ApplyFullSupportedSurfaceMovement();
   }
 }
 
-float Operation::CalculateRollAngle(int aileronStickValue) {
+void Operation::ApplyManualSurfaceMovement() {
+  int aileronStickValue = transmitter_->AileronStick()->Value();
+  int elevatorStickValue = transmitter_->ElevatorStick()->Value();
+  int aileronValue = ((float) 90 / 500) * (aileronStickValue - 1500) * 0.5;
+  int elevatorValue = ((float) 90 / 500) * (elevatorStickValue - 1500) * 0.5;
+#ifdef AILERON
+  surfaces_->PerformAileronMovement(aileronValue);
+#endif
+#ifdef ELEVATOR
+  surfaces_->PerformElevatorMovement(elevatorValue);
+#endif
+#ifdef ELEVON
+  surfaces_->PerformAsyncElevonMovement(aileronValue);
+  surfaces_->PerformSyncElevonMovement(elevatorValue);
+#endif
+#ifdef RUDDERVATOR
+  surfaces_->PerformAsyncRuddervatorMovement(aileronValue);
+  surfaces_->PerformSyncRuddervatorMovement(elevatorValue);
+#endif
+  surfaces_->Flush();
+}
+
+void Operation::ApplySemiSupportedSurfaceMovement() {
+  int aileronStickValue = transmitter_->AileronStick()->Value();
+  int elevatorStickValue = transmitter_->ElevatorStick()->Value();
+  int elevatorValue = ((float) 90 / 500) * (elevatorStickValue - 1500) * 0.5;
+  AdjustPlaneRollAngle(CalculateDesiredRollAngle(aileronStickValue));
+#ifdef ELEVATOR
+  surfaces_->PerformElevatorMovement(elevatorValue);
+#endif
+#ifdef ELEVON
+  surfaces_->PerformSyncElevonMovement(elevatorValue);
+#endif
+#ifdef RUDDERVATOR
+  surfaces_->PerformSyncRuddervatorMovement(elevatorValue);
+#endif
+  surfaces_->Flush();
+}
+
+void Operation::ApplyFullSupportedSurfaceMovement() {
+  int aileronStickValue = transmitter_->AileronStick()->Value();
+  int elevatorStickValue = transmitter_->ElevatorStick()->Value();
+  AdjustPlaneOrientation(CalculateDesiredRollAngle(aileronStickValue),
+    CalculateDesiredPitchAngle(elevatorStickValue));
+}
+
+void Operation::ApplyRudderMovement() {
+  int rudderStickValue = transmitter_->RudderStick()->Value() - 1500;
+  int rudderValue = -((float) 90 / 500) * rudderStickValue * 0.5;
+#ifdef RUDDER
+  surfaces_->PerformRudderMovement(rudderValue);
+#endif
+#ifdef RUDDERVATOR
+  surfaces_->PerformAsyncRuddervatorMovement(rudderValue);
+#endif
+}
+
+float Operation::CalculateDesiredRollAngle(int aileronStickValue) {
   float value = ((float) 1 / 500) * (aileronStickValue - 1500);
   return value * MAX_BANK_ANGLE;
 }
 
-float Operation::CalculatePitchAngle(int elevatorStickValue) {
+float Operation::CalculateDesiredPitchAngle(int elevatorStickValue) {
   float value = ((float) 1 / 500) * (elevatorStickValue - 1500);
   if (value > 0) {
     return value * MAX_CLIMB_ANGLE;
   }
   return value * MAX_DESCENT_ANGLE;
+}
+
+int Operation::CalculateTrueRollAngle(float desiredRollAngle) {
+  float currentRollAngle = imu_->Roll();
+  float error = desiredRollAngle - currentRollAngle;
+  return (int) (roll_pid_controller_->Calculate(currentRollAngle, error)) + 5;
+}
+
+int Operation::CalculateTruePitchAngle(float desiredPitchAngle) {
+  float currentPitchAngle = -imu_->Pitch() - 5;
+  float error = desiredPitchAngle - currentPitchAngle;
+  return -(int) (pitch_pid_controller_->Calculate(currentPitchAngle, error));
 }
 
 void Operation::AdjustPlaneOrientation(float desiredRollAngle, float desiredPitchAngle) {
@@ -71,15 +127,27 @@ void Operation::AdjustPlaneOrientation(float desiredRollAngle, float desiredPitc
 }
 
 void Operation::AdjustPlaneRollAngle(float desiredRollAngle) {
-  float currentRollAngle = imu_->Roll();
-  float error = desiredRollAngle - currentRollAngle;
-  surfaces_->PerformAsyncAileronMovement((int) (roll_pid_controller_->
-    Calculate(currentRollAngle, error)) + 5);
+  int rollAngle = CalculateTrueRollAngle(desiredRollAngle);
+#ifdef AILERON
+  surfaces_->PerformAileronMovement(rollAngle);
+#endif
+#ifdef ELEVON
+  surfaces_->PerformAsyncElevonMovement(rollAngle);
+#endif
+#ifdef RUDDERVATOR
+  surfaces_->PerformAsyncRuddervatorMovement(rollAngle);
+#endif
 }
 
 void Operation::AdjustPlanePitchAngle(float desiredPitchAngle) {
-  float currentPitchAngle = -imu_->Pitch() - 5;
-  float error = desiredPitchAngle - currentPitchAngle;
-  surfaces_->PerformSyncRuddervatorMovement(-(int) (pitch_pid_controller_->
-    Calculate(currentPitchAngle, error)));
+  int pitchAngle = CalculateTruePitchAngle(desiredPitchAngle);
+#ifdef ELEVATOR
+  surfaces_->PerformElevatorMovement(pitchAngle);
+#endif
+#ifdef ELEVON
+  surfaces_->PerformSyncElevonMovement(pitchAngle);
+#endif
+#ifdef RUDDERVATOR
+  surfaces_->PerformSyncRuddervatorMovement(pitchAngle);
+#endif
 }

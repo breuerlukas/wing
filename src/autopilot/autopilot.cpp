@@ -34,7 +34,7 @@ void AutoPilot::Tick(double course) {
   float rollAngle = CalculateRollAngle(direction, course);
   if (autopilot_mode_switch_->State() == kUp) {
     operation_->AdjustPlaneOrientation(rollAngle,
-      operation_->CalculatePitchAngle(transmitter_->ElevatorStick()->Value()));
+      operation_->CalculateDesiredPitchAngle(transmitter_->ElevatorStick()->Value()));
     return;
   }
   operation_->AdjustPlaneOrientation(rollAngle, CalculatePitchAngle());

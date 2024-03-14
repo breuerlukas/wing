@@ -1,8 +1,12 @@
 #ifndef WING_CONFIG_H
 #define WING_CONFIG_H
 
-#define MAX(x, y) (((x) > (y)) ? (x) : (y))
-#define MIN(x, y) (((x) < (y)) ? (x) : (y))
+//CONFIGURATION
+//#define AILERON
+//#define ELEVATOR
+//#define RUDDER
+#define ELEVON
+//#define RUDDERVATOR
 
 //CALIBRATION
 #define ALTIMETER_CALIBRATION_INTERVALS 50

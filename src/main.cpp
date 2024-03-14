@@ -26,9 +26,8 @@ const int kStabilizationSwitchId = 5;
 const int kAutopilotSwitchId = 6;
 const int kAutopilotModeSwitchId = 4;
 const int kEnginePin = 8;
-const int kLeftRuddervatorPin = 9;
-const int kRightRuddervatorPin = 10;
-const int kAileronPin = 11;
+const int kLeftElevonPin = 9;
+const int kRightElevonPin = 10;
 
 Plane* plane;
 
@@ -47,8 +46,9 @@ void setup() {
   Imu* imu = new Imu();
   Altimeter* altimeter = new Altimeter(1013);
   Engine* engine = new Engine(kEnginePin);
-  Surfaces* surfaces = new Surfaces(new Aileron(kAileronPin),
-    new Ruddervator(kRightRuddervatorPin), new Ruddervator(kLeftRuddervatorPin));
+  Surfaces* surfaces = new Surfaces();
+  surfaces->RegisterLeftElevon(new Elevon(kLeftElevonPin));
+  surfaces->RegisterRightElevon(new Elevon(kRightElevonPin));
   Location* planeLocation = new Location(0, 0);
   Pid* rollPidController = new Pid(0.5, 0, 0.02);
   Pid* pitchPidController = new Pid(0.8, 0, 0.05);

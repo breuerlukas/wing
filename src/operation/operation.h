@@ -22,6 +22,12 @@ private:
   TripleSwitch* stabilization_switch_;
   Pid* roll_pid_controller_;
   Pid* pitch_pid_controller_;
+  int CalculateTrueRollAngle(float desiredRollAngle);
+  int CalculateTruePitchAngle(float desiredPitchAngle);
+  void ApplyRudderMovement();
+  void ApplyManualSurfaceMovement();
+  void ApplySemiSupportedSurfaceMovement();
+  void ApplyFullSupportedSurfaceMovement();
 public:
   Operation(Transmitter* transmitter, Imu* imu, Engine* engine,
     Surfaces* surfaces, DualSwitch* engineSwitch, TripleSwitch* stabilizationSwitch,
@@ -29,8 +35,8 @@ public:
   void Recalculate();
   void ApplyEngineThrust();
   void ApplySurfaceMovement();
-  float CalculateRollAngle(int aileronStickValue);
-  float CalculatePitchAngle(int elevatorStickValue);
+  float CalculateDesiredRollAngle(int aileronStickValue);
+  float CalculateDesiredPitchAngle(int elevatorStickValue);
   void AdjustPlaneOrientation(float desiredRollAngle, float desiredPitchAngle);
   void AdjustPlaneRollAngle(float desiredRollAngle);
   void AdjustPlanePitchAngle(float desiredPitchAngle);

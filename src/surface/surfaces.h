@@ -3,26 +3,70 @@
 
 #include "list/list.h"
 #include "config/config.h"
-#include "aileron.h"
-#include "ruddervator.h"
+#include "surface/surface-compound.h"
+#include "surface/aileron.h"
+#include "surface/elevator.h"
+#include "surface/rudder.h"
+#include "surface/elevon.h"
+#include "surface/ruddervator.h"
 
 class Surfaces {
 private:
-  Aileron* aileron_;
-  Ruddervator* right_ruddervator_;
-  Ruddervator* left_ruddervator_;
-  List<int> aileron_temp_values_;
-  List<int> right_ruddervator_temp_values_;
-  List<int> left_ruddervator_temp_values_;
-  void FlushAilerons();
-  void FlushRuddervators();
+#ifdef AILERON
+  SurfaceCompound aileron_compound_;
+#endif
+#ifdef ELEVATOR
+  SurfaceCompound elevator_compound_;
+#endif
+#ifdef RUDDER
+  SurfaceCompound rudder_compound_;
+#endif
+#ifdef ELEVON
+  SurfaceCompound elevon_compound_;
+#endif
+#ifdef RUDDERVATOR
+  SurfaceCompound ruddervator_compound_;
+#endif
 public:
-  Surfaces(Aileron* aileron, Ruddervator* rightRuddervator,
-    Ruddervator* leftRuddervator);
+  Surfaces();
+#ifdef AILERON
+  void RegisterSingleAileron(Aileron* aileron);
+  void RegisterLeftAileron(Aileron* aileron);
+  void RegisterRightAileron(Aileron* aileron);
+#endif
+#ifdef ELEVATOR
+  void RegisterSingleElevator(Elevator* elevator);
+  void RegisterMultipleElevator(Elevator* elevator);
+#endif
+#ifdef RUDDER
+  void RegisterRudder(Rudder* rudder);
+#endif
+#ifdef ELEVON
+  void RegisterLeftElevon(Elevon* elevon);
+  void RegisterRightElevon(Elevon* elevon);
+#endif
+#ifdef RUDDERVATOR
+  void RegisterLeftRuddervator(Ruddervator* ruddervator);
+  void RegisterRightRuddervator(Ruddervator* ruddervator);
+#endif
   void Initialize();
-  void PerformAsyncAileronMovement(int value);
+#ifdef AILERON
+  void PerformAileronMovement(int value);
+#endif
+#ifdef ELEVATOR
+  void PerformElevatorMovement(int value);
+#endif
+#ifdef RUDDER
+  void PerformRudderMovement(int value);
+#endif
+#ifdef ELEVON
+  void PerformSyncElevonMovement(int value);
+  void PerformAsyncElevonMovement(int value);
+#endif
+#ifdef RUDDERVATOR
   void PerformSyncRuddervatorMovement(int value);
   void PerformAsyncRuddervatorMovement(int value);
+#endif
   void Flush();
 };
 
