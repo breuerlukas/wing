@@ -19,13 +19,18 @@ AutoPilot::AutoPilot(Transmitter* transmitter, Altimeter* altimeter,
 
 void AutoPilot::Initialize() {
   mission_->Begin();
+  auto_launch_->Enable();
 }
 
 void AutoPilot::Tick(double course) {
   UpdateAutopilotState();
   if (!CheckAutopilotState()) {
+    auto_launch_->Disable();
+    auto_land_->Disable();
     return;
   }
+  auto_launch_->Tick();
+  auto_land_->Tick();
   operation_->ApplyEngineThrust();
   Direction direction = plane_location_->DirectionTo(mission_->Current()->Location());
   if (CheckWaypointReaching(course, direction)) {
