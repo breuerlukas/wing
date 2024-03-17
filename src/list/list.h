@@ -16,7 +16,6 @@ class List {
 public:
   List();
   List(int(*compare)(T & a, T & b));
-  virtual ~List();
 
   virtual void setCompare(int (* compare)(T& a, T& b));
 
@@ -77,12 +76,6 @@ List<T>::List() {}
 template<typename T>
 List<T>::List(int(*compare)(T & a, T & b)) {
   setCompare(compare);
-}
-
-// Clear Nodes and free Memory
-template<typename T>
-List<T>::~List() {
-  clear();
 }
 
 template<typename T>
