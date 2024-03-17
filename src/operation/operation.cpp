@@ -111,13 +111,13 @@ float Operation::CalculateDesiredPitchAngle(int elevatorStickValue) {
 int Operation::CalculateTrueRollAngle(float desiredRollAngle) {
   float currentRollAngle = imu_->Roll();
   float error = desiredRollAngle - currentRollAngle;
-  return (int) (roll_pid_controller_->Calculate(currentRollAngle, error)) + 5;
+  return (int) (roll_pid_controller_->Calculate(currentRollAngle, error));
 }
 
 int Operation::CalculateTruePitchAngle(float desiredPitchAngle) {
-  float currentPitchAngle = -imu_->Pitch() - 5;
+  float currentPitchAngle = imu_->Pitch();
   float error = desiredPitchAngle - currentPitchAngle;
-  return -(int) (pitch_pid_controller_->Calculate(currentPitchAngle, error));
+  return (int) (pitch_pid_controller_->Calculate(currentPitchAngle, error)) + 5;
 }
 
 void Operation::AdjustPlaneOrientation(float desiredRollAngle, float desiredPitchAngle) {
