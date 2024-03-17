@@ -61,7 +61,7 @@ void SurfaceCompound::PerformSyncMovement(int value) {
     return;
   }
   PerformSideSurfaceMovement(value, kSideLeft);
-  PerformSideSurfaceMovement(value, kSideRight);
+  PerformSideSurfaceMovement(-value, kSideRight);
 }
 
 void SurfaceCompound::PerformAsyncMovement(int value) {
@@ -69,7 +69,7 @@ void SurfaceCompound::PerformAsyncMovement(int value) {
     return;
   }
   PerformSideSurfaceMovement(value, kSideLeft);
-  PerformSideSurfaceMovement(-value, kSideRight);
+  PerformSideSurfaceMovement(value, kSideRight);
 }
 
 void SurfaceCompound::PerformSingleSurfaceMovement(int value) {
