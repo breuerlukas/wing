@@ -30,13 +30,12 @@ private:
 public:
   Surfaces();
 #ifdef AILERON
-  void RegisterSingleAileron(Aileron* aileron);
+  void RegisterAileron(Aileron* aileron);
   void RegisterLeftAileron(Aileron* aileron);
   void RegisterRightAileron(Aileron* aileron);
 #endif
 #ifdef ELEVATOR
-  void RegisterSingleElevator(Elevator* elevator);
-  void RegisterMultipleElevator(Elevator* elevator);
+  void RegisterElevator(Elevator* elevator);
 #endif
 #ifdef RUDDER
   void RegisterRudder(Rudder* rudder);

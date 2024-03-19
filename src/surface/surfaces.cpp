@@ -5,8 +5,8 @@ Surfaces::Surfaces() {
 }
 
 #ifdef AILERON
-void Surfaces::RegisterSingleAileron(Aileron *aileron) {
-  aileron_compound_.RegisterSingleSurface(aileron);
+void Surfaces::RegisterAileron(Aileron *aileron) {
+  aileron_compound_.RegisterLineSurface(aileron);
 }
 
 void Surfaces::RegisterLeftAileron(Aileron *aileron) {
@@ -19,18 +19,14 @@ void Surfaces::RegisterRightAileron(Aileron *aileron) {
 #endif
 
 #ifdef ELEVATOR
-void Surfaces::RegisterSingleElevator(Elevator* elevator) {
-  elevator_compound_.RegisterSingleSurface(elevator);
-}
-
-void Surfaces::RegisterMultipleElevator(Elevator* elevator) {
-  elevator_compound_.RegisterMultipleSurface(elevator);
+void Surfaces::RegisterElevator(Elevator* elevator) {
+  elevator_compound_.RegisterLineSurface(elevator);
 }
 #endif
 
 #ifdef RUDDER
 void Surfaces::RegisterRudder(Rudder* rudder) {
-  rudder_compound_.RegisterSingleSurface(rudder);
+  rudder_compound_.RegisterLineSurface(rudder);
 }
 #endif
 
@@ -74,39 +70,39 @@ void Surfaces::Initialize() {
 
 #ifdef AILERON
 void Surfaces::PerformAileronMovement(int value) {
-  aileron_compound_.PerformMovement(value);
+  aileron_compound_.PerformLineSurfaceMovement(value);
 }
 #endif
 
 #ifdef ELEVATOR
 void Surfaces::PerformElevatorMovement(int value) {
-  elevator_compound_.PerformMovement(value);
+  elevator_compound_.PerformLineSurfaceMovement(value);
 }
 #endif
 
 #ifdef RUDDER
 void Surfaces::PerformRudderMovement(int value) {
-  rudder_compound_.PerformMovement(value);
+  rudder_compound_.PerformLineSurfaceMovement(value);
 }
 #endif
 
 #ifdef ELEVON
 void Surfaces::PerformSyncElevonMovement(int value) {
-  elevon_compound_.PerformSyncMovement(value);
+  elevon_compound_.PerformSyncSideSurfaceMovement(value);
 }
 
 void Surfaces::PerformAsyncElevonMovement(int value) {
-  elevon_compound_.PerformAsyncMovement(value);
+  elevon_compound_.PerformAsyncSideSurfaceMovement(value);
 }
 #endif
 
 #ifdef RUDDERVATOR
 void Surfaces::PerformSyncRuddervatorMovement(int value) {
-  ruddervator_compound_.PerformSyncMovement(value);
+  ruddervator_compound_.PerformSyncSideSurfaceMovement(value);
 }
 
 void Surfaces::PerformAsyncRuddervatorMovement(int value) {
-  ruddervator_compound_.PerformAsyncMovement(value);
+  ruddervator_compound_.PerformAsyncSideSurfaceMovement(value);
 }
 #endif
 

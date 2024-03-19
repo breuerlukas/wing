@@ -1,13 +1,8 @@
 #include "surface-compound.h"
 
-void SurfaceCompound::RegisterSingleSurface(Surface* surface) {
-  single_surface_ = surface;
-  type_ = kSingleCompound;
-}
-
-void SurfaceCompound::RegisterMultipleSurface(Surface* surface) {
-  multiple_surfaces_.add(surface);
-  type_ = kMultipleCompound;
+void SurfaceCompound::RegisterLineSurface(Surface* surface) {
+  line_surfaces_.add(surface);
+  type_ = kLineCompound;
 }
 
 void SurfaceCompound::RegisterSideSurface(Surface* surface, SurfaceSide side) {
@@ -20,22 +15,16 @@ void SurfaceCompound::RegisterSideSurface(Surface* surface, SurfaceSide side) {
 }
 
 void SurfaceCompound::Initialize() {
-  if (IsSingleCompound()) {
-    InitializeSingleSurface();
-  } else if (IsMultipleCompound()) {
-    InitializeMultipleSurfaces();
+  if (IsLineCompound()) {
+    InitializeLineSurfaces();
   } else if (IsSideCompound()) {
     InitializeSideSurfaces();
   }
 }
 
-void SurfaceCompound::InitializeSingleSurface() {
-  single_surface_->Initialize();
-}
-
-void SurfaceCompound::InitializeMultipleSurfaces() {
-  for (int i = 0; i < multiple_surfaces_.size(); i++) {
-    multiple_surfaces_.get(i)->Initialize();
+void SurfaceCompound::InitializeLineSurfaces() {
+  for (int i = 0; i < line_surfaces_.size(); i++) {
+    line_surfaces_.get(i)->Initialize();
   }
 }
 
@@ -48,15 +37,7 @@ void SurfaceCompound::InitializeSideSurfaces() {
   }
 }
 
-void SurfaceCompound::PerformMovement(int value) {
-  if (IsSingleCompound()) {
-    PerformSingleSurfaceMovement(value);
-  } else if (IsMultipleCompound()) {
-    PerformMultipleSurfaceMovement(value);
-  }
-}
-
-void SurfaceCompound::PerformSyncMovement(int value) {
+void SurfaceCompound::PerformSyncSideSurfaceMovement(int value) {
   if (!IsSideCompound()) {
     return;
   }
@@ -64,20 +45,16 @@ void SurfaceCompound::PerformSyncMovement(int value) {
   PerformSideSurfaceMovement(-value, kSideRight);
 }
 
-void SurfaceCompound::PerformAsyncMovement(int value) {
+void SurfaceCompound::PerformAsyncSideSurfaceMovement(int value) {
   if (!IsSideCompound()) {
     return;
   }
-  PerformSideSurfaceMovement(value, kSideLeft);
-  PerformSideSurfaceMovement(value, kSideRight);
+  PerformSideSurfaceMovement(-value, kSideLeft);
+  PerformSideSurfaceMovement(-value, kSideRight);
 }
 
-void SurfaceCompound::PerformSingleSurfaceMovement(int value) {
-  single_temp_values_.add(value);
-}
-
-void SurfaceCompound::PerformMultipleSurfaceMovement(int value) {
-  multiple_temp_values_.add(value);
+void SurfaceCompound::PerformLineSurfaceMovement(int value) {
+  line_temp_values_.add(value);
 }
 
 void SurfaceCompound::PerformSideSurfaceMovement(int value, SurfaceSide side) {
@@ -89,26 +66,18 @@ void SurfaceCompound::PerformSideSurfaceMovement(int value, SurfaceSide side) {
 }
 
 void SurfaceCompound::Flush() {
-  if (IsSingleCompound()) {
-    FlushSingleSurface();
-  } else if (IsMultipleCompound()) {
-    FlushMultipleSurfaces();
+  if (IsLineCompound()) {
+    FlushLineSurfaces();
   } else if (IsSideCompound()) {
     FlushSideSurfaces();
   }
 }
 
-void SurfaceCompound::FlushSingleSurface() {
-  int value = CalculateAccumulatedValue(single_temp_values_);
-  single_temp_values_.clear();
-  single_surface_->Move(value);
-}
-
-void SurfaceCompound::FlushMultipleSurfaces() {
-  int value = CalculateAccumulatedValue(multiple_temp_values_);
-  multiple_temp_values_.clear();
-  for (int i = 0; i < multiple_surfaces_.size(); i++) {
-    multiple_surfaces_.get(i)->Move(value);
+void SurfaceCompound::FlushLineSurfaces() {
+  int value = CalculateAccumulatedValue(line_temp_values_);
+  line_temp_values_.clear();
+  for (int i = 0; i < line_surfaces_.size(); i++) {
+    line_surfaces_.get(i)->Move(value);
   }
 }
 
@@ -134,30 +103,10 @@ int SurfaceCompound::CalculateAccumulatedValue(List<int> tempValues) {
   return accumulated;
 }
 
-bool SurfaceCompound::IsSingleCompound() {
-  return type_ == kSingleCompound;
-}
-
-bool SurfaceCompound::IsMultipleCompound() {
-  return type_ == kMultipleCompound;
+bool SurfaceCompound::IsLineCompound() {
+  return type_ == kLineCompound;
 }
 
 bool SurfaceCompound::IsSideCompound() {
   return type_ == kSideCompound;
-}
-
-Surface *SurfaceCompound::SingleSurface() {
-  return single_surface_;
-}
-
-List<Surface*> SurfaceCompound::MultipleSurfaces() {
-  return multiple_surfaces_;
-}
-
-List<Surface*> SurfaceCompound::LeftSurfaces() {
-  return left_surfaces_;
-}
-
-List<Surface*> SurfaceCompound::RightSurfaces() {
-  return right_surfaces_;
 }
