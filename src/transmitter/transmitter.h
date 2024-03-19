@@ -9,7 +9,7 @@
 
 class Transmitter {
 private:
-  CRSF crsf_ = CRSF(Serial1);
+  CRSF crsf_ = CRSF(Serial5);
   Stick* throttle_stick_;
   Stick* elevator_stick_;
   Stick* aileron_stick_;
