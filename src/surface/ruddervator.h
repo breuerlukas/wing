@@ -6,6 +6,7 @@
 class Ruddervator : public Surface {
 public:
   Ruddervator(int servoPin);
+  Ruddervator(int servoPin, int trim);
 };
 
 

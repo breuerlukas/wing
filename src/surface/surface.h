@@ -6,9 +6,11 @@
 class Surface {
 private:
   int servo_pin_;
+  int trim_;
   PWMServo servo_;
 public:
   Surface(int servoPin);
+  Surface(int servoPin, int trim);
   void Initialize();
   void Move(int value);
 };

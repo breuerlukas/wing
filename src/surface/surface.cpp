@@ -1,6 +1,10 @@
 #include "surface.h"
 
-Surface::Surface(int servoPin) : servo_pin_(servoPin) {
+Surface::Surface(int servoPin) : Surface(servoPin, 0) {
+
+}
+
+Surface::Surface(int servoPin, int trim) : servo_pin_(servoPin), trim_(trim) {
 
 }
 
@@ -9,5 +13,5 @@ void Surface::Initialize() {
 }
 
 void Surface::Move(int value) {
-  servo_.write(value);
+  servo_.write(value + trim_);
 }
