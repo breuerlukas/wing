@@ -41,7 +41,7 @@ void Imu::CalculateRollAndPitch(icm_20948_DMP_data_t data) {
   double t2 = +2.0 * (q0 * q2 - q3 * q1);
   t2 = t2 > 1.0 ? 1.0 : t2;
   t2 = t2 < -1.0 ? -1.0 : t2;
-  roll_ = (float) (asin(t2) * 180.0 / PI);
+  roll_ = (float) -(asin(t2) * 180.0 / PI);
 }
 
 void Imu::CalculateAcceleration(icm_20948_DMP_data_t data) {
