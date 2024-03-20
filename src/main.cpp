@@ -47,8 +47,8 @@ void setup() {
   Altimeter* altimeter = new Altimeter(1013);
   Engine* engine = new Engine(kEnginePin);
   Surfaces* surfaces = new Surfaces();
-  surfaces->RegisterLeftElevon(new Elevon(kLeftElevonPin, 10));
-  surfaces->RegisterRightElevon(new Elevon(kRightElevonPin, -20));
+  surfaces->RegisterLeftElevon(new Elevon(kLeftElevonPin, 5));
+  surfaces->RegisterRightElevon(new Elevon(kRightElevonPin, -10));
   Location* planeLocation = new Location(0, 0);
   Pid* rollPidController = new Pid(0.7, 0, 0);
   Pid* pitchPidController = new Pid(0.9, 0, 0);
