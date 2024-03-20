@@ -86,7 +86,7 @@ void Operation::ApplyFullSupportedSurfaceMovement() {
 
 void Operation::ApplyRudderMovement() {
   int rudderStickValue = transmitter_->RudderStick()->Value() - 1500;
-  int rudderValue = -((float) 90 / 500) * rudderStickValue * 0.5;
+  int rudderValue = ((float) 90 / 500) * rudderStickValue * 0.5;
 #ifdef RUDDER
   surfaces_->PerformRudderMovement(rudderValue);
 #endif
@@ -102,22 +102,22 @@ float Operation::CalculateDesiredRollAngle(int aileronStickValue) {
 
 float Operation::CalculateDesiredPitchAngle(int elevatorStickValue) {
   float value = ((float) 1 / 500) * (elevatorStickValue - 1500);
-  if (value > 0) {
+  if (value < 0) {
     return value * MAX_CLIMB_ANGLE;
   }
   return value * MAX_DESCENT_ANGLE;
 }
 
 int Operation::CalculateTrueRollAngle(float desiredRollAngle) {
-  float currentRollAngle = imu_->Roll();
+  float currentRollAngle = imu_->Roll() - 5;
   float error = desiredRollAngle - currentRollAngle;
   return (int) (roll_pid_controller_->Calculate(currentRollAngle, error));
 }
 
 int Operation::CalculateTruePitchAngle(float desiredPitchAngle) {
-  float currentPitchAngle = imu_->Pitch();
+  float currentPitchAngle = imu_->Pitch() - 5;
   float error = desiredPitchAngle - currentPitchAngle;
-  return (int) (pitch_pid_controller_->Calculate(currentPitchAngle, error)) + 5;
+  return (int) (pitch_pid_controller_->Calculate(currentPitchAngle, error));
 }
 
 void Operation::AdjustPlaneOrientation(float desiredRollAngle, float desiredPitchAngle) {
