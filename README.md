@@ -36,6 +36,15 @@ The biggest goal of the project is that anyone can fly a remote-controlled aircr
 
 Another goal is to create a development environment to give other people the opportunity to expand the software or implement their own functionalities. You should be able to use a type of module to give certain commands to the aircraft and add your own algorithms in small code sections.
 
+## Aircraft
+![Aircraft](images/1.webp)
+![Aircraft](images/2.webp)
+![Aircraft](images/3.webp)
+![Aircraft](images/4.webp)
+![Aircraft](images/5.webp)
+![Aircraft](images/6.webp)
+![Aircraft](images/7.webp)
+
 ## License
 
 [GPL](https://github.com/LukasBreuerDE/cast/blob/master/LICENSE.md)
