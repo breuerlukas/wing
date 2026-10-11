@@ -9,7 +9,7 @@ The project aims to enable anyone to control such an aircraft and to make it eas
 
 |        | Build Status                                                                |
 |--------|-----------------------------------------------------------------------------|
-| master | ![PlatformIO](https://github.com/LukasBreuerDE/wing/workflows/CI/badge.svg) |
+| master | ![PlatformIO](https://github.com/breuerlukas/wing/actions/workflows/platformio.yml/badge.svg) |
 
 ## Motivation
 Personally, I have been involved in aviation and aircraft control for years. In doing so, I have dealt with the physical and technical side. So I could collect deep knowledge in this area.
@@ -47,4 +47,4 @@ Another goal is to create a development environment to give other people the opp
 
 ## License
 
-[GPL](https://github.com/LukasBreuerDE/cast/blob/master/LICENSE.md)
+[GPL](https://github.com/breuerlukas/wing/blob/master/LICENSE.md)
